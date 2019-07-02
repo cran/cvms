@@ -1,0 +1,310 @@
+---
+title: "Introduction to cvms"
+author: 
+  - "Ludvig Renbo Olsen"
+date: "`r Sys.Date()`"
+abstract: |
+  This vignette is an introduction to the package cvms.  
+  Cross-Validation for Model Selection.  
+  &nbsp;  
+  &nbsp;  
+  Contact author at r-pkgs@ludvigolsen.dk
+  &nbsp;  
+  &nbsp;  
+  
+output: 
+  rmarkdown::html_vignette:
+    css: 
+    - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
+    - styles.css
+    fig_width: 6
+    fig_height: 4
+    toc: yes
+    number_sections: no
+  rmarkdown::pdf_document:
+    highlight: tango
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+vignette: >
+  %\VignetteIndexEntry{Introduction_to_cvms}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  dpi = 92,
+  fig.retina = 2
+)
+```
+
+# Main functions
+
+The main functions of cvms are:  
+
+* cross_validate()  
+* validate()  
+* baseline()  
+* combine_predictors()  
+* cv_plot()  
+* select_metrics()  
+* reconstruct_metrics()  
+
+# Examples
+
+## Attach packages
+```{r warning=FALSE, message=FALSE}
+library(cvms)
+library(groupdata2) # fold()
+library(knitr) # kable()
+library(dplyr) # %>% arrange()
+library(ggplot2)
+```
+
+## Load data
+
+The dataset participant.scores comes with cvms.
+
+```{r}
+data <- participant.scores
+```
+
+## Fold data
+
+Create a grouping factor for subsetting of folds using groupdata2::fold(). Order the dataset by the folds.
+
+```{r warning=FALSE, message=FALSE}
+# Set seed for reproducibility
+set.seed(7)
+
+# Fold data 
+data <- fold(data, k = 4,
+             cat_col = 'diagnosis',
+             id_col = 'participant') %>% 
+  arrange(.folds)
+
+# Show first 15 rows of data
+data %>% head(15) %>% kable()
+```
+
+## Cross-validate a single model
+
+### Gaussian
+
+```{r warning=FALSE, message=FALSE}
+CV1 <- cross_validate(data, "score~diagnosis", 
+                     fold_cols = '.folds', 
+                     family='gaussian', 
+                     REML = FALSE)
+
+# Show results
+CV1
+
+# Let's take a closer look at the different parts of the output 
+
+# Results metrics
+CV1 %>% select_metrics() %>% kable()
+
+# Nested predictions 
+# Note that [[1]] picks predictions for the first row
+CV1$Predictions[[1]] %>% head() %>% kable()
+
+# Nested results from the different folds
+CV1$Results[[1]] %>% kable()
+
+# Nested model coefficients
+# Note that you have the full p-values, 
+# but kable() only shows a certain number of digits
+CV1$Coefficients[[1]] %>% kable()
+
+# Additional information about the model
+# and the training process
+CV1 %>% select(11:17) %>% kable()
+
+```
+
+### Binomial
+
+```{r}
+CV2 <- cross_validate(data, "diagnosis~score", 
+                     fold_cols = '.folds', 
+                     family='binomial')
+
+# Show results
+CV2
+
+# Let's take a closer look at the different parts of the output 
+# We won't repeat the parts too similar to those in Gaussian
+
+# Results metrics
+CV2 %>% select(1:9) %>% kable()
+CV2 %>% select(10:14) %>% kable()
+
+# ROC curve info
+CV2$ROC[[1]] %>% head() %>% kable()
+
+# Confusion matrix
+CV2$`Confusion Matrix`[[1]] %>% kable()
+```
+
+
+## Cross-validate multiple models
+
+### Create model formulas
+
+```{r}
+models <- c("score ~ diagnosis","score~age")
+mixed_models <- c("score~diagnosis+(1|session)","score~age+(1|session)")
+```
+
+### Cross-validate fixed effects models
+
+```{r}
+CV3 <- cross_validate(data, models, 
+                     fold_cols = '.folds', 
+                     family='gaussian', 
+                     REML = FALSE)
+
+# Show results
+CV3
+```
+
+### Cross-validate mixed effects models
+
+```{r}
+CV4 <- cross_validate(data, mixed_models, 
+                     fold_cols = '.folds', 
+                     family='gaussian', 
+                     REML = FALSE)
+
+# Show results
+CV4
+```
+
+## Repeated cross-validation
+
+Let's first add some extra fold columns. We will use the num_fold_cols argument to add 3 unique fold columns. We tell fold() to keep the existing fold column and simply add three extra columns. We could also choose to remove the existing fold column, if for instance we were changing the number of folds (k). Note, that the original fold column will be renamed to ".folds_1".  
+
+```{r}
+# Set seed for reproducibility
+set.seed(2)
+
+# Fold data 
+data <- fold(data, k = 4,
+             cat_col = 'diagnosis',
+             id_col = 'participant',
+             num_fold_cols = 3,
+             handle_existing_fold_cols = "keep")
+
+# Show first 15 rows of data
+data %>% head(10) %>% kable()
+
+```
+
+
+```{r}
+CV5 <- cross_validate(data, "diagnosis ~ score", 
+                     fold_cols = paste0(".folds_", 1:4), 
+                     family='binomial', 
+                     REML = FALSE)
+
+# Show results
+CV5
+
+# The binomial output now has a nested 'Results' tibble
+# Let's see a subset of the columns
+CV5$Results[[1]] %>% select(1:8) %>%  kable()
+```
+
+## Baseline evaluations
+
+Create baseline evaluations of a test set.
+
+### Gaussian
+
+Approach: The baseline model (y ~ 1), where 1 is simply the intercept (i.e. mean of y), is fitted on n random subsets of the training set and evaluated on the test set. We also perform an evaluation of the model fitted on the entire training set.
+
+Start by partitioning the dataset.
+
+```{r}
+# Set seed for reproducibility
+set.seed(1)
+
+# Partition the dataset 
+partitions <- groupdata2::partition(participant.scores, 
+                                    p = 0.7,
+                                    cat_col = 'diagnosis',
+                                    id_col = 'participant',
+                                    list_out = TRUE)
+train_set <- partitions[[1]]
+test_set <- partitions[[2]]
+```
+
+Create the baseline evaluations.
+
+```{r}
+baseline(test_data = test_set, train_data = train_set,
+         n = 100, dependent_col = "score", family = "gaussian")
+```
+
+### Binomial
+
+Approach: n random sets of predictions are evaluated against the dependent variable in the test set. We also evaluate a set of all 0s and a set of all 1s.
+
+Create the baseline evaluations.
+
+```{r}
+baseline(test_data = test_set, n = 100, 
+         dependent_col = "diagnosis", family = "binomial")
+```
+
+
+## Plot results
+
+There are currently a small set of plots for quick visualization of the results. It is supposed to be easy to extract the needed information to create your own plots. If you lack access to any information or have other requests or ideas, feel free to open an issue.
+
+### Gaussian
+
+```{r}
+cv_plot(CV1, type = "RMSE") +
+  theme_bw()
+cv_plot(CV1, type = "r2") +
+  theme_bw()
+cv_plot(CV1, type = "IC") +
+  theme_bw()
+cv_plot(CV1, type = "coefficients") +
+  theme_bw()
+```
+
+### Binomial
+
+```{r}
+cv_plot(CV2, type = "ROC") +
+  theme_bw()
+```
+
+## Generate model formulas
+
+Instead of manually typing all possible model formulas for a set of fixed effects (including the possible interactions), combine_predictors() can do it for you (with some constraints). 
+
+When including interactions, >200k formulas have been precomputed for up to 8 fixed effects, with a maximum interaction size of 3, and a maximum of 5 fixed effects per formula. It's possible to further limit the generated formulas.
+
+We can also append a random effects structure to the generated formulas.
+
+```{r}
+combine_predictors(dependent = "y",
+                   fixed_effects = c("a","b","c"),
+                   random_effects = "(1|d)")
+```
+
+If two or more fixed effects should not be in the same formula, like an effect and its log-transformed version, we can provide them as sublists.
+
+```{r}
+combine_predictors(dependent = "y",
+                   fixed_effects = list("a", list("b","log_b")),
+                   random_effects = "(1|d)")
+```
