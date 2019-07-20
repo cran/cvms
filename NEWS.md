@@ -1,3 +1,7 @@
+# cvms 0.1.1
+
+* Unit tests have been made compatible with R v. 3.5
+
 # cvms 0.1.0
 
 * Adds optional parallelization.
