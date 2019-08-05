@@ -3,40 +3,53 @@
 
 # cvms
 
-**Cross-Validation for Model Selection**
+**Cross-Validation for Model Selection**  
+**Authors:** [Ludvig R. Olsen](http://ludvigolsen.dk/) (
+<r-pkgs@ludvigolsen.dk> ), Hugh Benjamin Zachariae <br/> **License:**
+[MIT](https://opensource.org/licenses/MIT) <br/> **Started:** October
+2016
 
-R package: Cross-validating gaussian and binomial regression models.
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/cvms)](https://cran.r-project.org/package=cvms)
+[![metacran
+downloads](https://cranlogs.r-pkg.org/badges/cvms)](https://cran.r-project.org/package=cvms)
+[![minimal R
+version](https://img.shields.io/badge/R%3E%3D-3.5-6666ff.svg)](https://cran.r-project.org/)
+[![Codecov test
+coverage](https://codecov.io/gh/ludvigolsen/cvms/branch/master/graph/badge.svg)](https://codecov.io/gh/ludvigolsen/cvms?branch=master)
+[![Travis build
+status](https://travis-ci.org/LudvigOlsen/cvms.svg?branch=master)](https://travis-ci.org/LudvigOlsen/cvms)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/LudvigOlsen/cvms?branch=master&svg=true)](https://ci.appveyor.com/project/LudvigOlsen/cvms)
 
-By Ludvig R. Olsen and Benjamin Zachariae.  
-Started in Oct. 2016
+## Overview
 
-Contact at: <r-pkgs@ludvigolsen.dk>
+R package: Cross-validate one or multiple regression models and get
+relevant evaluation metrics in a tidy format. Validate the best model on
+a test set and compare it to a baseline evaluation. Currently supports
+Gaussian and binomial regression.
 
 Main functions:
 
-  - cross\_validate()  
-  - validate()  
-  - baseline()  
-  - combine\_predictors()  
-  - cv\_plot()  
-  - select\_metrics()  
-  - reconstruct\_formulas()
+  - `cross_validate()`  
+  - `validate()`  
+  - `baseline()`  
+  - `combine_predictors()`  
+  - `cv_plot()`  
+  - `select_metrics()`  
+  - `reconstruct_formulas()`
 
 ## Important News
 
   - AUC calculation has changed. Now explicitly sets the direction in
-    pROC::roc. (27th of May 2019)
-
-  - Unit tests have been updated for the new random sampling generator
-    in R 3.6.0. They will NOT run on previous versions of R.
+    `pROC::roc`. (27th of May 2019)
 
   - Argument “positive” now defaults to 2. If a dependent variable has
     the values 0 and 1, 1 is now the default positive class, as that’s
-    the second largest values. If the dependent variable is a character,
+    the second smallest value. If the dependent variable is a character,
     it’s in alphabetical order.
 
   - Results now contain a count of singular fit messages. See
-    ?lme4::isSingular for more information.
+    `?lme4::isSingular` for more information.
 
 ## Installation
 
@@ -66,7 +79,7 @@ library(ggplot2)
 
 ## Load data
 
-The dataset participant.scores comes with cvms.
+The dataset `participant.scores` comes with cvms.
 
 ``` r
 data <- participant.scores
@@ -75,7 +88,7 @@ data <- participant.scores
 ## Fold data
 
 Create a grouping factor for subsetting of folds using
-groupdata2::fold(). Order the dataset by the folds.
+`groupdata2::fold()`. Order the dataset by the folds.
 
 ``` r
 # Set seed for reproducibility
@@ -321,7 +334,7 @@ CV4
 ## Repeated cross-validation
 
 Let’s first add some extra fold columns. We will use the num\_fold\_cols
-argument to add 3 unique fold columns. We tell fold() to keep the
+argument to add 3 unique fold columns. We tell `fold()` to keep the
 existing fold column and simply add three extra columns. We could also
 choose to remove the existing fold column, if for instance we were
 changing the number of folds (k). Note, that the original fold column
@@ -552,7 +565,7 @@ cv_plot(CV2, type = "ROC") +
 
 Instead of manually typing all possible model formulas for a set of
 fixed effects (including the possible interactions),
-combine\_predictors() can do it for you (with some constraints).
+`combine_predictors()` can do it for you (with some constraints).
 
 When including interactions, \>200k formulas have been precomputed for
 up to 8 fixed effects, with a maximum interaction size of 3, and a

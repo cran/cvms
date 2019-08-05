@@ -31,7 +31,7 @@ basics_run_model_fitting <- function(model_fitting_fn, model_specifics, train_da
   abs_fold <- assign_if_not_null_named_lists(fold_info[["abs_fold"]], "abs_fold", "fold_info")
   fold_column <- assign_if_not_null_named_lists(fold_info[["fold_column"]], "fold_column", "fold_info")
 
-  model = tryCatch({
+  model <- tryCatch({
 
     # Fit model
     model_fitting_fn(model_specifics, train_data)
@@ -117,6 +117,10 @@ basics_run_model_fitting <- function(model_fitting_fn, model_specifics, train_da
                     m, sep = "\n"))
 
       is_singular_message <- TRUE
+
+    } else if (grepl('Model function: Used', as.character(m), ignore.case = TRUE)) {
+      message(m)
+      is_singular_message <- FALSE
     } else {
       message(paste('',
                     '--------------------------',

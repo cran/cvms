@@ -2,7 +2,7 @@
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
+  fig.path = "man/figures/vignette_intro-",
   dpi = 92,
   fig.retina = 2
 )
@@ -33,7 +33,7 @@ data %>% head(15) %>% kable()
 ## ----warning=FALSE, message=FALSE----------------------------------------
 CV1 <- cross_validate(data, "score~diagnosis", 
                      fold_cols = '.folds', 
-                     family='gaussian', 
+                     family = 'gaussian', 
                      REML = FALSE)
 
 # Show results
@@ -64,7 +64,7 @@ CV1 %>% select(11:17) %>% kable()
 ## ------------------------------------------------------------------------
 CV2 <- cross_validate(data, "diagnosis~score", 
                      fold_cols = '.folds', 
-                     family='binomial')
+                     family = 'binomial')
 
 # Show results
 CV2
@@ -89,7 +89,7 @@ mixed_models <- c("score~diagnosis+(1|session)","score~age+(1|session)")
 ## ------------------------------------------------------------------------
 CV3 <- cross_validate(data, models, 
                      fold_cols = '.folds', 
-                     family='gaussian', 
+                     family = 'gaussian', 
                      REML = FALSE)
 
 # Show results
@@ -98,7 +98,7 @@ CV3
 ## ------------------------------------------------------------------------
 CV4 <- cross_validate(data, mixed_models, 
                      fold_cols = '.folds', 
-                     family='gaussian', 
+                     family = 'gaussian', 
                      REML = FALSE)
 
 # Show results
@@ -122,7 +122,7 @@ data %>% head(10) %>% kable()
 ## ------------------------------------------------------------------------
 CV5 <- cross_validate(data, "diagnosis ~ score", 
                      fold_cols = paste0(".folds_", 1:4), 
-                     family='binomial', 
+                     family = 'binomial', 
                      REML = FALSE)
 
 # Show results

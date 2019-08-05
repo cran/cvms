@@ -13,7 +13,7 @@
 
 <meta name="author" content="Ludvig Renbo Olsen" />
 
-<meta name="date" content="2019-07-20" />
+<meta name="date" content="2019-08-05" />
 
 <title>Introduction to cvms</title>
 
@@ -332,7 +332,7 @@ padding-bottom:7px;
 
 <h1 class="title toc-ignore">Introduction to cvms</h1>
 <h4 class="author">Ludvig Renbo Olsen</h4>
-<h4 class="date">2019-07-20</h4>
+<h4 class="date">2019-08-05</h4>
 <div class="abstract">
 <p class="abstract">Abstract</p>
 This vignette is an introduction to the package cvms.<br />
@@ -563,7 +563,7 @@ Contact author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkgs@lu
 <h3>Gaussian</h3>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">CV1 &lt;-<span class="st"> </span><span class="kw">cross_validate</span>(data, <span class="st">&quot;score~diagnosis&quot;</span>, </a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">                     <span class="dt">fold_cols =</span> <span class="st">'.folds'</span>, </a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">                     <span class="dt">family=</span><span class="st">'gaussian'</span>, </a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">                     <span class="dt">family =</span> <span class="st">'gaussian'</span>, </a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">                     <span class="dt">REML =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co"># Show results</span></a>
@@ -748,7 +748,7 @@ Contact author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkgs@lu
 <td align="right">51.00000</td>
 <td align="right">5.901264</td>
 <td align="right">8.642216</td>
-<td align="right">0</td>
+<td align="right">0.0000000</td>
 <td align="right">1</td>
 <td align="left">.folds</td>
 </tr>
@@ -757,7 +757,7 @@ Contact author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkgs@lu
 <td align="right">-20.33333</td>
 <td align="right">7.464574</td>
 <td align="right">-2.723978</td>
-<td align="right">0</td>
+<td align="right">0.0123925</td>
 <td align="right">1</td>
 <td align="left">.folds</td>
 </tr>
@@ -766,7 +766,7 @@ Contact author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkgs@lu
 <td align="right">53.33333</td>
 <td align="right">5.718886</td>
 <td align="right">9.325826</td>
-<td align="right">0</td>
+<td align="right">0.0000000</td>
 <td align="right">2</td>
 <td align="left">.folds</td>
 </tr>
@@ -775,7 +775,7 @@ Contact author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkgs@lu
 <td align="right">-19.66667</td>
 <td align="right">7.565375</td>
 <td align="right">-2.599563</td>
-<td align="right">0</td>
+<td align="right">0.0176016</td>
 <td align="right">2</td>
 <td align="left">.folds</td>
 </tr>
@@ -784,7 +784,7 @@ Contact author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkgs@lu
 <td align="right">49.77778</td>
 <td align="right">5.653977</td>
 <td align="right">8.804030</td>
-<td align="right">0</td>
+<td align="right">0.0000000</td>
 <td align="right">3</td>
 <td align="left">.folds</td>
 </tr>
@@ -793,7 +793,7 @@ Contact author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkgs@lu
 <td align="right">-18.77778</td>
 <td align="right">7.151778</td>
 <td align="right">-2.625610</td>
-<td align="right">0</td>
+<td align="right">0.0154426</td>
 <td align="right">3</td>
 <td align="left">.folds</td>
 </tr>
@@ -802,7 +802,7 @@ Contact author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkgs@lu
 <td align="right">49.55556</td>
 <td align="right">5.061304</td>
 <td align="right">9.791065</td>
-<td align="right">0</td>
+<td align="right">0.0000000</td>
 <td align="right">4</td>
 <td align="left">.folds</td>
 </tr>
@@ -811,7 +811,7 @@ Contact author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkgs@lu
 <td align="right">-22.30556</td>
 <td align="right">6.695476</td>
 <td align="right">-3.331437</td>
-<td align="right">0</td>
+<td align="right">0.0035077</td>
 <td align="right">4</td>
 <td align="left">.folds</td>
 </tr>
@@ -850,7 +850,7 @@ Contact author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkgs@lu
 <h3>Binomial</h3>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">CV2 &lt;-<span class="st"> </span><span class="kw">cross_validate</span>(data, <span class="st">&quot;diagnosis~score&quot;</span>, </a>
 <a class="sourceLine" id="cb9-2" data-line-number="2">                     <span class="dt">fold_cols =</span> <span class="st">'.folds'</span>, </a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">                     <span class="dt">family=</span><span class="st">'binomial'</span>)</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">                     <span class="dt">family =</span> <span class="st">'binomial'</span>)</a>
 <a class="sourceLine" id="cb9-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co"># Show results</span></a>
 <a class="sourceLine" id="cb9-6" data-line-number="6">CV2</a>
@@ -1019,7 +1019,7 @@ Contact author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkgs@lu
 <h3>Cross-validate fixed effects models</h3>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">CV3 &lt;-<span class="st"> </span><span class="kw">cross_validate</span>(data, models, </a>
 <a class="sourceLine" id="cb14-2" data-line-number="2">                     <span class="dt">fold_cols =</span> <span class="st">'.folds'</span>, </a>
-<a class="sourceLine" id="cb14-3" data-line-number="3">                     <span class="dt">family=</span><span class="st">'gaussian'</span>, </a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">                     <span class="dt">family =</span> <span class="st">'gaussian'</span>, </a>
 <a class="sourceLine" id="cb14-4" data-line-number="4">                     <span class="dt">REML =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb14-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co"># Show results</span></a>
@@ -1038,7 +1038,7 @@ Contact author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkgs@lu
 <h3>Cross-validate mixed effects models</h3>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">CV4 &lt;-<span class="st"> </span><span class="kw">cross_validate</span>(data, mixed_models, </a>
 <a class="sourceLine" id="cb15-2" data-line-number="2">                     <span class="dt">fold_cols =</span> <span class="st">'.folds'</span>, </a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">                     <span class="dt">family=</span><span class="st">'gaussian'</span>, </a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">                     <span class="dt">family =</span> <span class="st">'gaussian'</span>, </a>
 <a class="sourceLine" id="cb15-4" data-line-number="4">                     <span class="dt">REML =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb15-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb15-6" data-line-number="6"><span class="co"># Show results</span></a>
@@ -1198,7 +1198,7 @@ Contact author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkgs@lu
 </table>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">CV5 &lt;-<span class="st"> </span><span class="kw">cross_validate</span>(data, <span class="st">&quot;diagnosis ~ score&quot;</span>, </a>
 <a class="sourceLine" id="cb17-2" data-line-number="2">                     <span class="dt">fold_cols =</span> <span class="kw">paste0</span>(<span class="st">&quot;.folds_&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>), </a>
-<a class="sourceLine" id="cb17-3" data-line-number="3">                     <span class="dt">family=</span><span class="st">'binomial'</span>, </a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">                     <span class="dt">family =</span> <span class="st">'binomial'</span>, </a>
 <a class="sourceLine" id="cb17-4" data-line-number="4">                     <span class="dt">REML =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb17-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb17-6" data-line-number="6"><span class="co"># Show results</span></a>
