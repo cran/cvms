@@ -9,7 +9,7 @@ knitr::opts_chunk$set(
 
 ## ----warning=FALSE, message=FALSE----------------------------------------
 library(cvms)
-library(groupdata2) # fold()
+library(groupdata2) # fold() partition()
 library(knitr) # kable()
 library(dplyr) # %>% arrange()
 library(ggplot2)
@@ -17,7 +17,7 @@ library(ggplot2)
 ## ------------------------------------------------------------------------
 data <- participant.scores
 
-## ----warning=FALSE, message=FALSE----------------------------------------
+## ------------------------------------------------------------------------
 # Set seed for reproducibility
 set.seed(7)
 
@@ -31,10 +31,10 @@ data <- fold(data, k = 4,
 data %>% head(15) %>% kable()
 
 ## ----warning=FALSE, message=FALSE----------------------------------------
-CV1 <- cross_validate(data, "score~diagnosis", 
-                     fold_cols = '.folds', 
-                     family = 'gaussian', 
-                     REML = FALSE)
+CV1 <- cross_validate(data, "score~diagnosis",
+                      fold_cols = '.folds',
+                      family = 'gaussian',
+                      REML = FALSE)
 
 # Show results
 CV1
@@ -62,9 +62,9 @@ CV1 %>% select(11:17) %>% kable()
 
 
 ## ------------------------------------------------------------------------
-CV2 <- cross_validate(data, "diagnosis~score", 
-                     fold_cols = '.folds', 
-                     family = 'binomial')
+CV2 <- cross_validate(data, "diagnosis~score",
+                      fold_cols = '.folds',
+                      family = 'binomial')
 
 # Show results
 CV2
@@ -83,23 +83,23 @@ CV2$ROC[[1]] %>% head() %>% kable()
 CV2$`Confusion Matrix`[[1]] %>% kable()
 
 ## ------------------------------------------------------------------------
-models <- c("score ~ diagnosis","score~age")
-mixed_models <- c("score~diagnosis+(1|session)","score~age+(1|session)")
+models <- c("score~diagnosis", "score~age")
+mixed_models <- c("score~diagnosis+(1|session)", "score~age+(1|session)")
 
 ## ------------------------------------------------------------------------
-CV3 <- cross_validate(data, models, 
-                     fold_cols = '.folds', 
-                     family = 'gaussian', 
-                     REML = FALSE)
+CV3 <- cross_validate(data, models,
+                      fold_cols = '.folds',
+                      family = 'gaussian',
+                      REML = FALSE)
 
 # Show results
 CV3
 
 ## ------------------------------------------------------------------------
-CV4 <- cross_validate(data, mixed_models, 
-                     fold_cols = '.folds', 
-                     family = 'gaussian', 
-                     REML = FALSE)
+CV4 <- cross_validate(data, mixed_models,
+                      fold_cols = '.folds',
+                      family = 'gaussian',
+                      REML = FALSE)
 
 # Show results
 CV4
@@ -120,10 +120,10 @@ data %>% head(10) %>% kable()
 
 
 ## ------------------------------------------------------------------------
-CV5 <- cross_validate(data, "diagnosis ~ score", 
-                     fold_cols = paste0(".folds_", 1:4), 
-                     family = 'binomial', 
-                     REML = FALSE)
+CV5 <- cross_validate(data, "diagnosis ~ score",
+                      fold_cols = paste0(".folds_", 1:4),
+                      family = 'binomial',
+                      REML = FALSE)
 
 # Show results
 CV5
@@ -133,11 +133,63 @@ CV5
 CV5$Results[[1]] %>% select(1:8) %>%  kable()
 
 ## ------------------------------------------------------------------------
+# Set seed
+set.seed(1)
+
+# Create class names
+class_names <- paste0("class_", 1:4)
+
+# Create random dataset with 100 observations 
+# Partition into training set (75%) and test set (25%)
+multiclass_partitions <- multiclass_probability_tibble(
+  num_classes = 3, # Here, number of predictors
+  num_observations = 100,
+  apply_softmax = FALSE,
+  FUN = rnorm,
+  class_name = "predictor_") %>%
+  dplyr::mutate(class = sample(
+    class_names,
+    size = 100,
+    replace = TRUE)) %>%
+  partition(p = 0.75,
+            cat_col = "class")
+
+# Extract partitions
+multiclass_train_set <- multiclass_partitions[[1]]
+multiclass_test_set <- multiclass_partitions[[2]]
+
+multiclass_test_set
+
+## ------------------------------------------------------------------------
+# Train multinomial model
+multiclass_model <- nnet::multinom(
+   "class ~ predictor_1 + predictor_2 + predictor_3",
+   data = multiclass_train_set)
+
+# Predict the targets in the test set
+predictions <- predict(multiclass_model, 
+                       multiclass_test_set,
+                       type = "probs") %>%
+  dplyr::as_tibble()
+
+# Add the targets
+predictions[["target"]] <- multiclass_test_set[["class"]]
+
+head(predictions, 10)
+
+## ------------------------------------------------------------------------
+# Evaluate predictions
+evaluate(data = predictions,
+         target_col = "target",
+         prediction_cols = class_names,
+         type = "multinomial")
+
+## ------------------------------------------------------------------------
 # Set seed for reproducibility
 set.seed(1)
 
 # Partition the dataset 
-partitions <- groupdata2::partition(participant.scores, 
+partitions <- groupdata2::partition(participant.scores,
                                     p = 0.7,
                                     cat_col = 'diagnosis',
                                     id_col = 'participant',
@@ -152,6 +204,24 @@ baseline(test_data = test_set, train_data = train_set,
 ## ------------------------------------------------------------------------
 baseline(test_data = test_set, n = 100, 
          dependent_col = "diagnosis", family = "binomial")
+
+## ------------------------------------------------------------------------
+multiclass_baseline <- baseline(
+  test_data = multiclass_test_set, n = 100,
+  dependent_col = "class", family = "multinomial")
+
+# Summarized metrics
+multiclass_baseline$summarized_metrics
+
+# Summarized class level results for class 1
+multiclass_baseline$summarized_class_level_results %>% 
+  dplyr::filter(Class == "class_1") %>%
+  tidyr::unnest(Results)
+
+# Random evaluations
+# Note, that the class level results for each repetition
+# is available as well
+multiclass_baseline$random_evaluations
 
 ## ------------------------------------------------------------------------
 cv_plot(CV1, type = "RMSE") +
