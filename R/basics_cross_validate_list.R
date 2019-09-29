@@ -1,6 +1,3 @@
-# R CMD check NOTE handling
-if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
-
 #' @importFrom plyr ldply
 #' @importFrom dplyr mutate %>%
 #' @importFrom tidyr separate
@@ -13,6 +10,7 @@ basics_cross_validate_list = function(data,
                                       REML = FALSE,
                                       cutoff = 0.5,
                                       positive = 2,
+                                      metrics = list(),
                                       rm_nc = FALSE,
                                       model_verbose = FALSE,
                                       parallel_ = FALSE,
@@ -29,18 +27,15 @@ basics_cross_validate_list = function(data,
             is.character(positive) || positive %in% c(1,2)
   )
 
+  # metrics
+  check_metrics_list(metrics)
+
   # Check that the fold column(s) is/are factor(s)
-  if (length(fold_cols) == 1){
-    stopifnot(is.factor(data[[fold_cols]]))
-  } else {
-    fcols <- data %>% dplyr::select(dplyr::one_of(fold_cols)) %>%
-      sapply(is.factor)
-    if (FALSE %in% fcols) {stop("At least one of the fold columns is not a factor.")}
-  }
+  check_fold_col_factor(data = data, fold_cols = fold_cols)
 
   # Get evaluation functions
   if (family == "gaussian"){
-    evaluation_type = "linear_regression"
+    evaluation_type = "gaussian"
   } else if (family == "binomial"){
     evaluation_type = "binomial"
   } else {stop("Only 'gaussian' and 'binomial' families are currently allowed.")}
@@ -53,18 +48,21 @@ basics_cross_validate_list = function(data,
     REML = REML,
     link = link,
     cutoff = cutoff,
+    control = control,
     positive = positive,
-    model_verbose = model_verbose
+    model_verbose = model_verbose,
+    caller = "cross_validate()"
   ) %>%
     basics_update_model_specifics()
 
-  # cross_validate() all the models using ldply()
-  model_cvs_df = ldply(model_list, .parallel = all(parallel_, parallelize == "models"), .fun = function(model_formula){
+  # cross_validate all the models using ldply()
+  model_cvs_df <- ldply(model_list, .parallel = all(parallel_, parallelize == "models"), .fun = function(model_formula){
     model_specifics[["model_formula"]] <- model_formula
     cross_validate_fn_single(data = data, model_fn = basics_model_fn,
                              evaluation_type = evaluation_type,
                              model_specifics = model_specifics,
                              model_specifics_update_fn = NULL, # did this above
+                             metrics = metrics,
                              fold_cols = fold_cols,
                              parallel_ = all(parallel_, parallelize == "folds"))
     }) %>%

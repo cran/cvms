@@ -133,6 +133,64 @@ CV5
 CV5$Results[[1]] %>% select(1:8) %>%  kable()
 
 ## ------------------------------------------------------------------------
+# Create model function
+#
+# train_data : tibble with the training data
+# formula : a formula object
+
+svm_model_fn <- function(train_data, formula){
+  
+  # Note that `formula` must be specified first
+  # when calling svm(), otherwise it fails
+  e1071::svm(formula = formula,
+             data = train_data, 
+             kernel = "linear",
+             type = "C-classification")
+}
+
+## ------------------------------------------------------------------------
+# Cross-validate svm_model_fn
+CV6 <- cross_validate_fn(data = data,
+                         model_fn = svm_model_fn,
+                         formulas = c("diagnosis~score", "diagnosis~age"),
+                         fold_cols = '.folds_1', 
+                         type = 'binomial')
+
+CV6
+
+## ------------------------------------------------------------------------
+# Create model function
+#
+# train_data : tibble with the training data
+# formula : a formula object
+
+nb_model_fn <- function(train_data, formula){
+  e1071::naiveBayes(formula = formula, 
+                    data = train_data)
+}
+
+## ------------------------------------------------------------------------
+# Create predict function
+#
+# test_data : tibble with the test data
+# model : fitted model object
+# formula : a formula object
+nb_predict_fn <- function(test_data, model, formula){
+    stats::predict(object = model, newdata = test_data, 
+                   type = "raw", allow.new.levels = TRUE)[,2]
+  }
+
+## ------------------------------------------------------------------------
+CV7 <- cross_validate_fn(data,
+                         model_fn = nb_model_fn,
+                         formulas = c("diagnosis~score", "diagnosis~age"),
+                         type = 'binomial',
+                         predict_fn = nb_predict_fn,
+                         fold_cols = '.folds_1')
+
+CV7
+
+## ------------------------------------------------------------------------
 # Set seed
 set.seed(1)
 
@@ -179,10 +237,15 @@ head(predictions, 10)
 
 ## ------------------------------------------------------------------------
 # Evaluate predictions
-evaluate(data = predictions,
-         target_col = "target",
-         prediction_cols = class_names,
-         type = "multinomial")
+ev <- evaluate(data = predictions,
+               target_col = "target",
+               prediction_cols = class_names,
+               type = "multinomial")
+
+ev
+
+## ------------------------------------------------------------------------
+ev$`Class Level Results`
 
 ## ------------------------------------------------------------------------
 # Set seed for reproducibility

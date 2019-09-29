@@ -6,6 +6,7 @@ create_gaussian_baseline_evaluations <- function(train_data,
                                                  n_samplings = 100,
                                                  min_training_rows = 5,
                                                  min_training_rows_left_out = 3,
+                                                 REML = FALSE,
                                                  na.rm = TRUE,
                                                  parallel_ = FALSE){
 
@@ -74,11 +75,12 @@ create_gaussian_baseline_evaluations <- function(train_data,
   model_specifics <- list(
     model_formula = model_formula,
     family = "gaussian",
-    REML = FALSE,
+    REML = REML,
     link = NULL,
     cutoff = 0.5,
     positive = 2,
-    model_verbose = FALSE) %>%
+    model_verbose = FALSE,
+    caller = "baseline()") %>%
     basics_update_model_specifics()
 
   # Sample probability of a row being included
@@ -122,7 +124,7 @@ create_gaussian_baseline_evaluations <- function(train_data,
   if (is.null(random_effects)){
     lm_fn <- lm
   } else {
-    lm_fn <- lme4::lmer
+    lm_fn <- function(...){lme4::lmer(..., REML = model_specifics[["REML"]])}
   }
 
   # Evaluate randomly sampled train set with model "y~1" (potentially plus random effects)
@@ -136,8 +138,8 @@ create_gaussian_baseline_evaluations <- function(train_data,
     sampled_train_set <- train_data[inds,]
 
     # Fit baseline model
-    baseline_linear_model <- lm_fn(model_specifics[["model_formula"]],
-                                data = sampled_train_set)
+    baseline_linear_model <- lm_fn(formula = model_specifics[["model_formula"]],
+                                   data = sampled_train_set)
 
     # Predict test set with baseline model
     test_data[["prediction"]] <- stats::predict(baseline_linear_model,
@@ -180,7 +182,7 @@ create_gaussian_baseline_evaluations <- function(train_data,
   # Replace infs with NA
   if(nrow(metrics_cols_with_infs) > 0){
     metrics_cols <- do.call(data.frame,c(lapply(metrics_cols, function(x) replace(x, is.infinite(x), NA)),
-                                         check.names=FALSE,fix.empty.names = FALSE, stringsAsFactors=FALSE))
+                                         check.names=FALSE, fix.empty.names = FALSE, stringsAsFactors=FALSE))
   }
 
   # This may be better solveable with pivot_* from tidyr, when it is on CRAN
@@ -200,17 +202,14 @@ create_gaussian_baseline_evaluations <- function(train_data,
 
   # Remove the INFs from the NAs count
   if(nrow(metrics_cols_with_infs) > 0){
-    NAs_row_number <- which(summarized_metrics$Measure == "NAs")
-    INFs_row_number <- which(summarized_metrics$Measure == "INFs")
-    summarized_metrics[NAs_row_number,-1] <- summarized_metrics[NAs_row_number,-1] -
-      summarized_metrics[INFs_row_number,-1]
+    summarized_metrics <- subtract_inf_count_from_na_count(summarized_metrics)
   }
-
 
   # Fitting on all rows
 
   # Fit baseline model
-  baseline_linear_model_all_rows <- lm_fn(model_specifics[["model_formula"]], data = train_data)
+  baseline_linear_model_all_rows <- lm_fn(model_specifics[["model_formula"]],
+                                          data = train_data)
 
   # Predict test set with baseline model
   test_data[["prediction"]] <- stats::predict(baseline_linear_model_all_rows,
@@ -243,5 +242,21 @@ create_gaussian_baseline_evaluations <- function(train_data,
   return(list("summarized_metrics" = overall_evaluations,
               "random_evaluations" = evaluations_random))
 
+}
+
+# Remove the INFs from the NAs count
+subtract_inf_count_from_na_count <- function(summarized_metrics){
+
+  # Find the row indices of the NA and INF counts
+  NAs_row_number <- which(summarized_metrics$Measure == "NAs")
+  INFs_row_number <- which(summarized_metrics$Measure == "INFs")
+
+  # Subtract the INF counts from the NA counts
+  summarized_metrics[NAs_row_number,-1] <- summarized_metrics[NAs_row_number,-1] -
+    summarized_metrics[INFs_row_number,-1]
+
+  summarized_metrics
 
 }
+
+

@@ -3,11 +3,12 @@ basics_update_model_specifics <- function(model_specifics){
   # Check required arguments
   check_argument_in_model_specifics("model_formula", model_specifics)
   check_argument_in_model_specifics("family", model_specifics)
+  check_argument_in_model_specifics("caller", model_specifics)
 
   # Set default arguments
   model_specifics[["link"]] = default_link(model_specifics[["link"]], family = model_specifics[["family"]])
   model_specifics[["control"]] = default_control(model_specifics[["control"]], family = model_specifics[["family"]],
-                                                 link=model_specifics[["link"]])
+                                                 link = model_specifics[["link"]])
 
   # err=TRUE means that it throws an error and warns to pass as named arguments.
   # We don't use this right now, as arguments that wasn't passed (and should take default value) are NULL.

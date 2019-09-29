@@ -4,11 +4,12 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 #' @importFrom dplyr %>%
 validate_fn_single = function(train_data,
                               model_fn,
-                              evaluation_type="linear_regression",
-                              model_specifics=list(),
-                              model_specifics_update_fn=NULL,
+                              evaluation_type = "gaussian",
+                              model_specifics = list(),
+                              model_specifics_update_fn = NULL,
                               test_data = NULL,
                               partitions_col = '.partitions',
+                              metrics = list(),
                               err_nc = FALSE) {
 
   # Set errors if input variables aren't what we expect / can handle
@@ -27,13 +28,17 @@ validate_fn_single = function(train_data,
     model_specifics <- model_specifics_update_fn(model_specifics)
   }
 
+  if (evaluation_type %ni% c("gaussian", "binomial")){
+    stop("'evaluation_type' must be either 'gaussian' or 'binomial'.")
+  }
+
   # If train and test data is not already split,
   # get train and test set
   if (is.null(test_data)) {
     # Create test set
-    test_data = train_data[train_data[[partitions_col]] == 2,]
+    test_data <- train_data[train_data[[partitions_col]] == 2,]
     # Create training set
-    train_data = train_data[train_data[[partitions_col]] == 1,]
+    train_data <- train_data[train_data[[partitions_col]] == 1,]
   }
 
   # Remove partitions column to allow for "y ~ ." definitions in the model formula
@@ -44,16 +49,16 @@ validate_fn_single = function(train_data,
 
   fitting_output <- model_fn(train_data = train_data,
                              test_data = test_data,
-                             fold_info = list(rel_fold=1, abs_fold=1, fold_column=1), # we'll remove this later
-                             model_specifics=model_specifics)
+                             fold_info = list(rel_fold = 1, abs_fold = 1, fold_column = 1), # we'll remove this later
+                             model_specifics = model_specifics)
 
   predictions_and_targets <- fitting_output[["predictions_and_targets"]]
 
   # Extract models
-  model = fitting_output[["model"]]
+  model <- fitting_output[["model"]]
 
   # Extract singular fit message
-  yielded_singular_fit_message = fitting_output[["yielded_singular_fit_message"]]
+  threw_singular_fit_message <- fitting_output[["threw_singular_fit_message"]]
 
   model_evaluation <- internal_evaluate(
     predictions_and_targets,
@@ -66,18 +71,18 @@ validate_fn_single = function(train_data,
       fold_column = "fold_column"
     ),
     models = list(model),
-    model_specifics = model_specifics
+    model_specifics = model_specifics,
+    metrics = metrics
   ) %>%
     dplyr::mutate(`Convergence Warnings` = ifelse(is.null(model), 1, 0),
-                  `Singular Fit Messages` = ifelse(isTRUE(yielded_singular_fit_message), 1, 0))
+                  `Singular Fit Messages` = ifelse(isTRUE(threw_singular_fit_message), 1, 0))
 
 
   # Remove Results tibble if linear regression
-  if (evaluation_type == "linear_regression"){
+  if (evaluation_type == "gaussian"){
     model_evaluation <- model_evaluation %>%
     dplyr::select(-dplyr::one_of("Results"))
   }
-
 
   if (isTRUE(err_nc) && model_evaluation[["Convergence Warnings"]] != 0) {
     stop("Model did not converge.")

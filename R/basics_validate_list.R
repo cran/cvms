@@ -5,7 +5,8 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 #' @importFrom tidyr separate
 basics_validate_list = function(train_data, model_list, family = 'gaussian',
                                 link = NULL, control = NULL, REML = FALSE,
-                                cutoff = 0.5, positive = 2, err_nc = FALSE,
+                                cutoff = 0.5, positive = 2,
+                                metrics = list(), err_nc = FALSE,
                                 rm_nc = FALSE, test_data = NULL,
                                 partitions_col = '.partitions',
                                 parallel_ = FALSE,
@@ -15,6 +16,9 @@ basics_validate_list = function(train_data, model_list, family = 'gaussian',
   stopifnot(is.data.frame(train_data),
             is.character(positive) || positive %in% c(1,2)
   )
+
+  # metrics
+  check_metrics_list(metrics)
 
   # If train and test data is not already split,
   # get train and test set
@@ -27,7 +31,7 @@ basics_validate_list = function(train_data, model_list, family = 'gaussian',
 
   # Get evaluation functions
   if (family == "gaussian"){
-    evaluation_type = "linear_regression"
+    evaluation_type = "gaussian"
   } else if (family == "binomial"){
     evaluation_type = "binomial"
   } else {stop("Only 'gaussian' and 'binomial' families are currently allowed.")}
@@ -40,8 +44,10 @@ basics_validate_list = function(train_data, model_list, family = 'gaussian',
     REML = REML,
     link = link,
     cutoff = cutoff,
+    control = control,
     positive = positive,
-    model_verbose = model_verbose) %>%
+    model_verbose = model_verbose,
+    caller = "validate()") %>%
     basics_update_model_specifics()
 
   # validate() all the models using ldply()
@@ -54,6 +60,7 @@ basics_validate_list = function(train_data, model_list, family = 'gaussian',
                        model_specifics_update_fn = NULL,
                        test_data = test_data,
                        partitions_col = partitions_col,
+                       metrics = metrics,
                        err_nc = err_nc)
   })
 
@@ -65,7 +72,6 @@ basics_validate_list = function(train_data, model_list, family = 'gaussian',
                   Link = model_specifics[["link"]])
 
   models <- validation_output %c% "Model"
-
 
   # Now we want to take the model from the model_list and split it up into
   # fixed effects and random effects

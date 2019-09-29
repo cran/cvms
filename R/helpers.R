@@ -99,6 +99,12 @@ replace_argument_in_model_specifics_if_null <- function(var_name, model_specific
   model_specifics
 }
 
+stop_if_argument_not_null <- function(var_name, model_specifics){
+  if (!is.null(model_specifics[[var_name]])){
+    stop(paste0("'", var_name, "' was not NULL."))
+  }
+}
+
 ### Results
 
 nest_results <- function(results){
@@ -375,6 +381,8 @@ create_tmp_var <- function(data, tmp_var = ".tmp_index_"){
   tmp_var
 }
 
+# Tidyr legacy
+
 # https://tidyr.tidyverse.org/dev/articles/in-packages.html
 tidyr_new_interface <- function() {
   utils::packageVersion("tidyr") > "0.8.99"
@@ -390,6 +398,21 @@ legacy_nest <- function(...){
   } else {
     tidyr::nest(...)
   }
+}
+
+# Keras check
+# testthat utilty for skipping tests when Keras isn't available
+# skip_if_no_keras <- function(version = NULL) {
+#   if (!keras::is_keras_available(version))
+#     testthat::skip("Required keras version not available for testing")
+# }
+
+# Used for checking warnings in testthat
+# Why?:
+# I had a case where test() used '' but console outputted ‘’
+# So I just strip for punctuation in such cases (Should be used sparingly)
+strip_for_punctuation <- function(strings){
+  gsub("[[:punct:][:blank:]]+", " ", strings)
 }
 
 # Wraps tibble::add_column
@@ -412,3 +435,48 @@ arg_not_used <- function(arg, arg_name, family, current_fn, message_fn=message){
 #     rep(l, n) # , recursive = recursive_unlist)
 # }
 
+
+## *_cross_validate_list args
+
+check_fold_col_factor <- function(data, fold_cols){
+  # Check that the fold column(s) is/are factor(s)
+  if (length(fold_cols) == 1){
+    stopifnot(is.factor(data[[fold_cols]]))
+  } else {
+    fcols <- data %>% dplyr::select(dplyr::one_of(fold_cols)) %>%
+      sapply(is.factor)
+    if (FALSE %in% fcols) {stop("At least one of the fold columns is not a factor.")}
+  }
+}
+
+# Check metrics argument
+check_metrics_list <- function(metrics){
+
+  if (!(is.list(metrics) || metrics == "all")){
+    stop("'metrics' must be either a list or the string 'all'.")
+  }
+
+  if (is.list(metrics) && length(metrics) > 0){
+    if (!rlang::is_named(metrics)){
+      stop("when 'metrics' is a non-empty list, it must be a named list.")
+    }
+  }
+}
+
+# Never used, but removes R CMD check NOTEs
+rcmd_import_handler <- function(){
+  lifecycle::deprecate_soft()
+}
+
+# Wraps dplyr::as_tibble()
+# If x is NULL, returns NULL
+to_tibble <- function(x, x_name, caller=""){
+  if (!is.null(x)){
+    x <- tryCatch({
+      dplyr::as_tibble(x)
+    }, error = function(e){
+      stop(paste0(caller, ": Could not convert '", x_name, "' to a tibble."))
+    })
+  }
+  x
+}

@@ -13,14 +13,15 @@ test_that("gaussian models with cross_validate_single_fn()",{
 
   ### LMER
   cv_result <- cross_validate_fn_single(dat, basics_model_fn,
-                                        evaluation_type = "linear_regression",
+                                        evaluation_type = "gaussian",
                                         model_specifics = list(
                                           model_formula="score~diagnosis+(1|session)",
                                           family="gaussian",
                                           REML=FALSE,
                                           link="identity",
                                           control=lme4::lmerControl(optimizer="nloptwrap"),
-                                          model_verbose = FALSE),
+                                          model_verbose = FALSE,
+                                          caller = "cross_validate()"),
                                         model_specifics_update_fn = basics_update_model_specifics,
                                         fold_cols =".folds")
 
@@ -37,16 +38,21 @@ test_that("gaussian models with cross_validate_single_fn()",{
   expect_equal(cv_result$`Convergence Warnings`, 0)
   # expect_equal(cv_result$Family, "gaussian")
   # expect_equal(cv_result$Link, "identity")
+  expect_equal(cv_result$`Warnings and Messages`[[1]],
+               structure(list(`Fold Column` = character(0), Fold = integer(0),
+                              Type = character(0), Message = character(0)),
+                         row.names = c(NA,0L), class = c("tbl_df", "tbl", "data.frame")))
 
   ### LM
   cv_result <- cross_validate_fn_single(dat, basics_model_fn,
-                                        evaluation_type = "linear_regression",
+                                        evaluation_type = "gaussian",
                                         model_specifics = list(
                                           model_formula="score~diagnosis",
                                           family="gaussian",
                                           REML=FALSE,
                                           link="identity",
-                                          model_verbose = FALSE),
+                                          model_verbose = FALSE,
+                                          caller = "cross_validate()"),
                                         model_specifics_update_fn = basics_update_model_specifics,
                                         fold_cols =".folds")
 
@@ -60,6 +66,10 @@ test_that("gaussian models with cross_validate_single_fn()",{
   expect_equal(cv_result$`Convergence Warnings`, 0)
   # expect_equal(cv_result$Family, "gaussian")
   # expect_equal(cv_result$Link, "identity")
+  expect_equal(cv_result$`Warnings and Messages`[[1]],
+               structure(list(`Fold Column` = character(0), Fold = integer(0),
+                              Type = character(0), Message = character(0)),
+                         row.names = c(NA,0L), class = c("tbl_df", "tbl", "data.frame")))
 
 })
 
@@ -85,7 +95,8 @@ test_that("binomial models with cross_validate_single_fn()",{
                                           link=NULL,
                                           positive=1,
                                           cutoff=0.5,
-                                          model_verbose = FALSE),
+                                          model_verbose = FALSE,
+                                          caller = "cross_validate()"),
                                         model_specifics_update_fn = basics_update_model_specifics,
                                         fold_cols =".folds")
 
@@ -107,6 +118,10 @@ test_that("binomial models with cross_validate_single_fn()",{
   expect_equal(cv_result$`Singular Fit Messages`, 0)
   # expect_equal(cv_result$Family, "binomial")
   # expect_equal(cv_result$Link, "logit")
+  expect_equal(cv_result$`Warnings and Messages`[[1]],
+               structure(list(`Fold Column` = character(0), Fold = integer(0),
+                              Type = character(0), Message = character(0)),
+                         row.names = c(NA,0L), class = c("tbl_df", "tbl", "data.frame")))
 
 
   ### GLM
@@ -119,7 +134,8 @@ test_that("binomial models with cross_validate_single_fn()",{
                                           link=NULL,
                                           positive=1,
                                           cutoff=0.5,
-                                          model_verbose = FALSE),
+                                          model_verbose = FALSE,
+                                          caller = "cross_validate()"),
                                         model_specifics_update_fn = basics_update_model_specifics,
                                         fold_cols =".folds")
 
@@ -141,5 +157,28 @@ test_that("binomial models with cross_validate_single_fn()",{
   expect_equal(cv_result$`Singular Fit Messages`, 0)
   # expect_equal(cv_result$Family, "binomial")
   # expect_equal(cv_result$Link, "logit")
+  expect_equal(cv_result$`Warnings and Messages`[[1]],
+               structure(list(`Fold Column` = character(0), Fold = integer(0),
+                              Type = character(0), Message = character(0)),
+                         row.names = c(NA,0L), class = c("tbl_df", "tbl", "data.frame")))
+
+
+  ### Errors
+  expect_error(cross_validate_fn_single(dat, basics_model_fn,
+                           evaluation_type = "fishandcat",
+                          model_specifics = list(
+                            model_formula="diagnosis~score",
+                            family="binomial",
+                            REML=FALSE,
+                            link=NULL,
+                            positive=1,
+                            cutoff=0.5,
+                            model_verbose = FALSE,
+                            caller = "cross_validate()"),
+                          model_specifics_update_fn = basics_update_model_specifics,
+                          fold_cols =".folds"),
+               "evaluation_type must be either 'gaussian', 'binomial', or 'multinomial'.",
+               fixed = TRUE)
 
 })
+

@@ -66,7 +66,8 @@ create_binomial_baseline_evaluations <- function(test_data,
     link = NULL,
     cutoff = cutoff,
     positive = positive,
-    model_verbose = FALSE
+    model_verbose = FALSE,
+    caller = "baseline()"
   ) %>%
     basics_update_model_specifics()
 
@@ -222,9 +223,7 @@ summarize_metric_cols <- function(metric_cols, na.rm = TRUE){
 
   # Remove the INFs from the NAs count
   if(nrow(metric_cols_with_infs) > 0){
-    NAs_row_number <- which(summarized_metrics$Measure == "NAs")
-    INFs_row_number <- which(summarized_metrics$Measure == "INFs")
-    summarized_metrics[NAs_row_number,-1] <- summarized_metrics[NAs_row_number,-1] - summarized_metrics[INFs_row_number,-1]
+    summarized_metrics <- subtract_inf_count_from_na_count(summarized_metrics)
   }
 
   summarized_metrics
