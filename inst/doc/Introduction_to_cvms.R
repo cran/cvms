@@ -1,4 +1,4 @@
-## ---- include = FALSE----------------------------------------------------
+## ---- include = FALSE---------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -7,17 +7,17 @@ knitr::opts_chunk$set(
   fig.retina = 2
 )
 
-## ----warning=FALSE, message=FALSE----------------------------------------
+## ----warning=FALSE, message=FALSE---------------------------------------------
 library(cvms)
 library(groupdata2) # fold() partition()
 library(knitr) # kable()
 library(dplyr) # %>% arrange()
 library(ggplot2)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 data <- participant.scores
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Set seed for reproducibility
 set.seed(7)
 
@@ -30,7 +30,7 @@ data <- fold(data, k = 4,
 # Show first 15 rows of data
 data %>% head(15) %>% kable()
 
-## ----warning=FALSE, message=FALSE----------------------------------------
+## ----warning=FALSE, message=FALSE---------------------------------------------
 CV1 <- cross_validate(data, "score~diagnosis",
                       fold_cols = '.folds',
                       family = 'gaussian',
@@ -61,7 +61,7 @@ CV1$Coefficients[[1]] %>% kable()
 CV1 %>% select(11:17) %>% kable()
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 CV2 <- cross_validate(data, "diagnosis~score",
                       fold_cols = '.folds',
                       family = 'binomial')
@@ -82,11 +82,11 @@ CV2$ROC[[1]] %>% head() %>% kable()
 # Confusion matrix
 CV2$`Confusion Matrix`[[1]] %>% kable()
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 models <- c("score~diagnosis", "score~age")
 mixed_models <- c("score~diagnosis+(1|session)", "score~age+(1|session)")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 CV3 <- cross_validate(data, models,
                       fold_cols = '.folds',
                       family = 'gaussian',
@@ -95,7 +95,7 @@ CV3 <- cross_validate(data, models,
 # Show results
 CV3
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 CV4 <- cross_validate(data, mixed_models,
                       fold_cols = '.folds',
                       family = 'gaussian',
@@ -104,7 +104,7 @@ CV4 <- cross_validate(data, mixed_models,
 # Show results
 CV4
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Set seed for reproducibility
 set.seed(2)
 
@@ -119,7 +119,7 @@ data <- fold(data, k = 4,
 data %>% head(10) %>% kable()
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 CV5 <- cross_validate(data, "diagnosis ~ score",
                       fold_cols = paste0(".folds_", 1:4),
                       family = 'binomial',
@@ -132,7 +132,7 @@ CV5
 # Let's see a subset of the columns
 CV5$Results[[1]] %>% select(1:8) %>%  kable()
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Create model function
 #
 # train_data : tibble with the training data
@@ -148,7 +148,7 @@ svm_model_fn <- function(train_data, formula){
              type = "C-classification")
 }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Cross-validate svm_model_fn
 CV6 <- cross_validate_fn(data = data,
                          model_fn = svm_model_fn,
@@ -158,7 +158,7 @@ CV6 <- cross_validate_fn(data = data,
 
 CV6
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Create model function
 #
 # train_data : tibble with the training data
@@ -169,7 +169,7 @@ nb_model_fn <- function(train_data, formula){
                     data = train_data)
 }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Create predict function
 #
 # test_data : tibble with the test data
@@ -180,7 +180,7 @@ nb_predict_fn <- function(test_data, model, formula){
                    type = "raw", allow.new.levels = TRUE)[,2]
   }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 CV7 <- cross_validate_fn(data,
                          model_fn = nb_model_fn,
                          formulas = c("diagnosis~score", "diagnosis~age"),
@@ -190,7 +190,7 @@ CV7 <- cross_validate_fn(data,
 
 CV7
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Set seed
 set.seed(1)
 
@@ -218,7 +218,7 @@ multiclass_test_set <- multiclass_partitions[[2]]
 
 multiclass_test_set
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Train multinomial model
 multiclass_model <- nnet::multinom(
    "class ~ predictor_1 + predictor_2 + predictor_3",
@@ -235,7 +235,7 @@ predictions[["target"]] <- multiclass_test_set[["class"]]
 
 head(predictions, 10)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Evaluate predictions
 ev <- evaluate(data = predictions,
                target_col = "target",
@@ -244,10 +244,10 @@ ev <- evaluate(data = predictions,
 
 ev
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ev$`Class Level Results`
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Set seed for reproducibility
 set.seed(1)
 
@@ -260,15 +260,15 @@ partitions <- groupdata2::partition(participant.scores,
 train_set <- partitions[[1]]
 test_set <- partitions[[2]]
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 baseline(test_data = test_set, train_data = train_set,
          n = 100, dependent_col = "score", family = "gaussian")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 baseline(test_data = test_set, n = 100, 
          dependent_col = "diagnosis", family = "binomial")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 multiclass_baseline <- baseline(
   test_data = multiclass_test_set, n = 100,
   dependent_col = "class", family = "multinomial")
@@ -286,7 +286,7 @@ multiclass_baseline$summarized_class_level_results %>%
 # is available as well
 multiclass_baseline$random_evaluations
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 cv_plot(CV1, type = "RMSE") +
   theme_bw()
 cv_plot(CV1, type = "r2") +
@@ -296,16 +296,16 @@ cv_plot(CV1, type = "IC") +
 cv_plot(CV1, type = "coefficients") +
   theme_bw()
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 cv_plot(CV2, type = "ROC") +
   theme_bw()
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 combine_predictors(dependent = "y",
                    fixed_effects = c("a","b","c"),
                    random_effects = "(1|d)")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 combine_predictors(dependent = "y",
                    fixed_effects = list("a", list("b","log_b")),
                    random_effects = "(1|d)")
