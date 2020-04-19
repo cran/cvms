@@ -3931,6 +3931,7 @@ test_that("evaluate() works with wines dataset", {
 })
 
 test_that("evaluate() is agnostic about the order of the input data", {
+
   dat <- data.frame(
     "target" = c(2, 1, 2, 1, 2, 1, 1, 1, 2, 2, 2, 1, 2, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1),
     "prediction" = c(
@@ -4109,6 +4110,9 @@ test_that("evaluate() and evaluate_residuals() has same metric values", {
 # for the same data
 
 test_that("the different prediction formats work properly in Gaussian evaluate()", {
+
+  testthat::skip_on_cran()
+
   xpectr::set_test_seed(42)
 
   # Gaussian
@@ -4471,12 +4475,11 @@ test_that("the different prediction formats work properly in Gaussian evaluate()
   side_effects_14622 <- xpectr::capture_side_effects(evaluate(data = gauss, target_col = "Target_1", prediction_cols = "Prediction_1", type = "gaussian", id_col = "Target_1", id_method = "mean", metrics = list(all = FALSE, RMSE = TRUE)), reset_seed = TRUE)
   expect_equal(
     xpectr::strip(side_effects_14622[['error']]),
-    xpectr::strip("Column name `Target_1` must not be duplicated."),
+    xpectr::strip("1 assertions failed:\n * 'id_col' and 'target_col' cannot be identical."),
     fixed = TRUE)
   expect_equal(
     xpectr::strip(side_effects_14622[['error_class']]),
-    xpectr::strip(c("tibble_error_column_names_must_be_unique", "tibble_error",
-      "rlang_error", "error", "condition")),
+    xpectr::strip(c("simpleError", "error", "condition")),
     fixed = TRUE)
 
   # Testing evaluate(data = gauss, target_col = "Target_...
@@ -4606,6 +4609,9 @@ test_that("the different prediction formats work properly in Gaussian evaluate()
 })
 
 test_that("the different prediction formats work properly in multinomial evaluate()", {
+
+  testthat::skip_on_cran()
+
   xpectr::set_test_seed(42)
 
   multinom <- tibble::tibble(
@@ -5248,6 +5254,9 @@ test_that("the different prediction formats work properly in multinomial evaluat
 })
 
 test_that("the different prediction formats work properly in binomial evaluate()", {
+
+  testthat::skip_on_cran()
+
   xpectr::set_test_seed(42)
 
   binom <- tibble::tibble(

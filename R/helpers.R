@@ -963,3 +963,4 @@ is_newer_lme4 <- function(){
   else out <- TRUE
   out
 }
+

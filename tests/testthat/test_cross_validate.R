@@ -699,8 +699,9 @@ test_that("binomial models gives warnings with control specified in cross_valida
 
   ### NOTE: The warnings are different between mac and linux
   # So we cannot check the below :/
-  expect_equal(cv_process[[1]]$warnings,
-    c(
+  expect_equal(
+    xpectr::strip(cv_process[[1]]$warnings, remove_numbers = TRUE),
+    xpectr::strip(c(
       "\n-------------------------------------\ncross_validate(): Warning:\nIn model:\ndiagnosis ~ score + age + (1|session) + (1|age)\nFor fold column:\n.folds\nIn fold:\n1\nmaxfun < 10 * length(par)^2 is not recommended.",
       "\n-------------------------------------\ncross_validate(): Convergence Warning:\nIn model:\ndiagnosis ~ score + age + (1|session) + (1|age)\nFor fold column:\n.folds\nIn fold:\n1\nconvergence code 1 from bobyqa: bobyqa -- maximum number of function evaluations exceeded",
       "\n-------------------------------------\ncross_validate(): Warning:\nIn model:\ndiagnosis ~ score + age + (1|session) + (1|age)\nFor fold column:\n.folds\nIn fold:\n2\nmaxfun < 10 * length(par)^2 is not recommended.",
@@ -710,7 +711,7 @@ test_that("binomial models gives warnings with control specified in cross_valida
       "\n-------------------------------------\ncross_validate(): Convergence Warning:\nIn model:\ndiagnosis ~ score + age + (1|session) + (1|age)\nFor fold column:\n.folds\nIn fold:\n3\nconvergence code 1 from bobyqa: bobyqa -- maximum number of function evaluations exceeded",
       "\n-------------------------------------\ncross_validate(): Warning:\nIn model:\ndiagnosis ~ score + age + (1|session) + (1|age)\nFor fold column:\n.folds\nIn fold:\n3\nunable to evaluate scaled gradient",
       "\n-------------------------------------\ncross_validate(): Convergence Warning:\nIn model:\ndiagnosis ~ score + age + (1|session) + (1|age)\nFor fold column:\n.folds\nIn fold:\n3\nModel failed to converge: degenerate  Hessian with 1 negative eigenvalues"
-    ),
+    ), remove_numbers = TRUE),
     fixed = TRUE
   )
 
@@ -728,7 +729,7 @@ test_that("binomial models gives warnings with control specified in cross_valida
 
 test_that("gaussian models work with control specified in cross_validate()", {
 
-  # skip_test_if_old_R_version()
+  testthat::skip_on_cran()
 
   # Load data and fold it
   xpectr::set_test_seed(2)
@@ -774,11 +775,12 @@ test_that("gaussian models work with control specified in cross_validate()", {
       verbose = FALSE
     ), reset_seed = TRUE)
   expect_equal(
-    xpectr::strip(side_effects_15526[['warnings']]),
+    xpectr::strip(side_effects_15526[['warnings']], remove_numbers = TRUE),
     xpectr::strip(c("\n---\ncross_validate(): convergence code 1 from bobyqa: bobyqa -- maximum number of function evaluations exceeded\nNote: Convergence Warning\nFor:\nFormula: score~diagnosis + (1|session)\nFold column: .folds\nFold: 1\nHyperparameters: REML : FALSE, control : list(list(optimizer = \"bobyqa\", restart_edge = TRUE, boundary.tol = 1e-05, calc.derivs = TRUE, use.last.params = FALSE, checkControl = list(check.nobs.vs.rankZ = \"ignore\", check.nobs.vs.nlev = \"stop\", check.nlev.gtreq.5 = \"ignore\", check.nlev.gtr.1 = \"stop\", check.nobs.vs.nRE = \"stop\", check.rankX = \"message+drop.cols\", check.scaleX = \"warning\", check.formula.LHS = \"stop\"), checkConv = list(check.conv.grad = list(action = \"warning\", tol = 0.002, relTol = NULL), check.conv.singular = list(action = \"message\", \n    tol = 1e-04), check.conv.hess = list(action = \"warning\", tol = 1e-06)), optCtrl = list(maxfun = 10))), model_verbose : FALSE, family : gaussian, is_special_fn : TRUE",
       "\n---\ncross_validate(): Model failed to converge with max|grad| = 0.429297 (tol = 0.002, component 1)\nNote: Convergence Warning\nFor:\nFormula: score~diagnosis + (1|session)\nFold column: .folds\nFold: 1\nHyperparameters: REML : FALSE, control : list(list(optimizer = \"bobyqa\", restart_edge = TRUE, boundary.tol = 1e-05, calc.derivs = TRUE, use.last.params = FALSE, checkControl = list(check.nobs.vs.rankZ = \"ignore\", check.nobs.vs.nlev = \"stop\", check.nlev.gtreq.5 = \"ignore\", check.nlev.gtr.1 = \"stop\", check.nobs.vs.nRE = \"stop\", check.rankX = \"message+drop.cols\", check.scaleX = \"warning\", check.formula.LHS = \"stop\"), checkConv = list(check.conv.grad = list(action = \"warning\", tol = 0.002, relTol = NULL), check.conv.singular = list(action = \"message\", \n    tol = 1e-04), check.conv.hess = list(action = \"warning\", tol = 1e-06)), optCtrl = list(maxfun = 10))), model_verbose : FALSE, family : gaussian, is_special_fn : TRUE",
       "\n---\ncross_validate(): convergence code 1 from bobyqa: bobyqa -- maximum number of function evaluations exceeded\nNote: Convergence Warning\nFor:\nFormula: score~diagnosis + (1|session)\nFold column: .folds\nFold: 2\nHyperparameters: REML : FALSE, control : list(list(optimizer = \"bobyqa\", restart_edge = TRUE, boundary.tol = 1e-05, calc.derivs = TRUE, use.last.params = FALSE, checkControl = list(check.nobs.vs.rankZ = \"ignore\", check.nobs.vs.nlev = \"stop\", check.nlev.gtreq.5 = \"ignore\", check.nlev.gtr.1 = \"stop\", check.nobs.vs.nRE = \"stop\", check.rankX = \"message+drop.cols\", check.scaleX = \"warning\", check.formula.LHS = \"stop\"), checkConv = list(check.conv.grad = list(action = \"warning\", tol = 0.002, relTol = NULL), check.conv.singular = list(action = \"message\", \n    tol = 1e-04), check.conv.hess = list(action = \"warning\", tol = 1e-06)), optCtrl = list(maxfun = 10))), model_verbose : FALSE, family : gaussian, is_special_fn : TRUE",
-      "\n---\ncross_validate(): convergence code 1 from bobyqa: bobyqa -- maximum number of function evaluations exceeded\nNote: Convergence Warning\nFor:\nFormula: score~diagnosis + (1|session)\nFold column: .folds\nFold: 3\nHyperparameters: REML : FALSE, control : list(list(optimizer = \"bobyqa\", restart_edge = TRUE, boundary.tol = 1e-05, calc.derivs = TRUE, use.last.params = FALSE, checkControl = list(check.nobs.vs.rankZ = \"ignore\", check.nobs.vs.nlev = \"stop\", check.nlev.gtreq.5 = \"ignore\", check.nlev.gtr.1 = \"stop\", check.nobs.vs.nRE = \"stop\", check.rankX = \"message+drop.cols\", check.scaleX = \"warning\", check.formula.LHS = \"stop\"), checkConv = list(check.conv.grad = list(action = \"warning\", tol = 0.002, relTol = NULL), check.conv.singular = list(action = \"message\", \n    tol = 1e-04), check.conv.hess = list(action = \"warning\", tol = 1e-06)), optCtrl = list(maxfun = 10))), model_verbose : FALSE, family : gaussian, is_special_fn : TRUE")),
+      "\n---\ncross_validate(): convergence code 1 from bobyqa: bobyqa -- maximum number of function evaluations exceeded\nNote: Convergence Warning\nFor:\nFormula: score~diagnosis + (1|session)\nFold column: .folds\nFold: 3\nHyperparameters: REML : FALSE, control : list(list(optimizer = \"bobyqa\", restart_edge = TRUE, boundary.tol = 1e-05, calc.derivs = TRUE, use.last.params = FALSE, checkControl = list(check.nobs.vs.rankZ = \"ignore\", check.nobs.vs.nlev = \"stop\", check.nlev.gtreq.5 = \"ignore\", check.nlev.gtr.1 = \"stop\", check.nobs.vs.nRE = \"stop\", check.rankX = \"message+drop.cols\", check.scaleX = \"warning\", check.formula.LHS = \"stop\"), checkConv = list(check.conv.grad = list(action = \"warning\", tol = 0.002, relTol = NULL), check.conv.singular = list(action = \"message\", \n    tol = 1e-04), check.conv.hess = list(action = \"warning\", tol = 1e-06)), optCtrl = list(maxfun = 10))), model_verbose : FALSE, family : gaussian, is_special_fn : TRUE"),
+      remove_numbers = TRUE),
     fixed = TRUE)
   expect_equal(
     xpectr::strip(side_effects_15526[['messages']]),
@@ -1009,7 +1011,7 @@ test_that("model using inline functions in formulas works with cross_validate()"
 
 test_that("binomial models work with repeated cross_validate()", {
 
-  # skip_test_if_old_R_version()
+  testthat::skip_on_cran()
 
   # Load data and fold it
   xpectr::set_test_seed(2)
@@ -1518,6 +1520,8 @@ test_that("gaussian models work with repeated cross_validate()", {
 # TODO Check preprocessing with random effects as well!
 test_that("preprocessing works with binomial models in cross_validate()", {
 
+  testthat::skip_on_cran()
+
   # Load data and fold it
   xpectr::set_test_seed(1)
   dat <- groupdata2::fold(participant.scores,
@@ -1996,6 +2000,8 @@ test_that("preprocessing works with binomial models in cross_validate()", {
 
 test_that("preprocessing works with binomial mixed models in cross_validate()", {
 
+  testthat::skip_on_cran()
+
   # Load data and fold it
   xpectr::set_test_seed(1)
   dat <- groupdata2::fold(participant.scores,
@@ -2341,7 +2347,7 @@ test_that("preprocessing works with binomial mixed models in cross_validate()", 
 
 test_that("that singular fit messages are caught, counted and messaged about in cross_validate()", {
 
-  # skip_test_if_old_R_version()
+  testthat::skip_on_cran()
 
   xpectr::set_test_seed(1)
   dat <- groupdata2::fold(participant.scores,
@@ -2539,6 +2545,7 @@ test_that("that singular fit messages are caught, counted and messaged about in 
 
 test_that("the expected errors are thrown by cross_validate()", {
 
+  testthat::skip_on_cran()
 
   # Load data and fold it
   xpectr::set_test_seed(1)
@@ -2643,6 +2650,7 @@ Please use the `verbose` argument instead.",
 
 test_that("verbose reports the correct model functions in cross_validate()", {
 
+  testthat::skip_on_cran()
 
   # Load data and fold it
   xpectr::set_test_seed(1)
@@ -3295,6 +3303,8 @@ test_that("verbose reports the correct model functions in cross_validate()", {
 
 test_that("binomial models with metrics list work with cross_validate()", {
 
+  testthat::skip_on_cran()
+
   # Load data and fold it
   xpectr::set_test_seed(1)
   dat <- groupdata2::fold(participant.scores,
@@ -3371,7 +3381,7 @@ test_that("binomial models with metrics list work with cross_validate()", {
 
 test_that("gaussian models with metrics list work with cross_validate()", {
 
-  # skip_test_if_old_R_version()
+  testthat::skip_on_cran()
 
   # Load data and fold it
   xpectr::set_test_seed(1)
