@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ludvig Renbo Olsen" />
 
-<meta name="date" content="2020-04-18" />
+<meta name="date" content="2020-05-28" />
 
 <title>Evaluate by ID/group</title>
 
@@ -337,7 +337,7 @@ font-size:108%;
 
 <h1 class="title toc-ignore">Evaluate by ID/group</h1>
 <h4 class="author">Ludvig Renbo Olsen</h4>
-<h4 class="date">2020-04-18</h4>
+<h4 class="date">2020-05-28</h4>
 <div class="abstract">
 <p class="abstract">Abstract</p>
 In this vignette, we learn how to evaluate predictions on the ID level with <code>evaluate()</code>.  <br />
@@ -516,7 +516,7 @@ Contact the author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkg
 <a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; # … with 13 more variables: `Neg Pred Value` &lt;dbl&gt;, AUC &lt;dbl&gt;, `Lower</span></a>
 <a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; #   CI` &lt;dbl&gt;, `Upper CI` &lt;dbl&gt;, Kappa &lt;dbl&gt;, MCC &lt;dbl&gt;, `Detection</span></a>
 <a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt; #   Rate` &lt;dbl&gt;, `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; #   Predictions &lt;list&gt;, ROC &lt;list&gt;, `Confusion Matrix` &lt;list&gt;, `Positive</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; #   Predictions &lt;list&gt;, ROC &lt;named list&gt;, `Confusion Matrix` &lt;list&gt;, `Positive</span></a>
 <a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; #   Class` &lt;chr&gt;</span></a></code></pre></div>
 <p>The <code>Predictions</code> column contains the averaged predictions:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">ev<span class="op">$</span>Predictions[[<span class="dv">1</span>]] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()</a></code></pre></div>
@@ -692,7 +692,7 @@ Contact the author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkg
 <a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; # … with 13 more variables: `Neg Pred Value` &lt;dbl&gt;, AUC &lt;dbl&gt;, `Lower</span></a>
 <a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; #   CI` &lt;dbl&gt;, `Upper CI` &lt;dbl&gt;, Kappa &lt;dbl&gt;, MCC &lt;dbl&gt;, `Detection</span></a>
 <a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; #   Rate` &lt;dbl&gt;, `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; #   Predictions &lt;list&gt;, ROC &lt;list&gt;, `Confusion Matrix` &lt;list&gt;, `Positive</span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; #   Predictions &lt;list&gt;, ROC &lt;named list&gt;, `Confusion Matrix` &lt;list&gt;, `Positive</span></a>
 <a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; #   Class` &lt;chr&gt;</span></a></code></pre></div>
 <p>Now the <code>Predictions</code> column looks as follows:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">ev_<span class="dv">2</span><span class="op">$</span>Predictions[[<span class="dv">1</span>]] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()</a></code></pre></div>
@@ -830,7 +830,7 @@ Contact the author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkg
 <a class="sourceLine" id="cb10-17" data-line-number="17"><span class="co">#&gt; # … with 13 more variables: `Neg Pred Value` &lt;dbl&gt;, AUC &lt;dbl&gt;, `Lower</span></a>
 <a class="sourceLine" id="cb10-18" data-line-number="18"><span class="co">#&gt; #   CI` &lt;dbl&gt;, `Upper CI` &lt;dbl&gt;, Kappa &lt;dbl&gt;, MCC &lt;dbl&gt;, `Detection</span></a>
 <a class="sourceLine" id="cb10-19" data-line-number="19"><span class="co">#&gt; #   Rate` &lt;dbl&gt;, `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb10-20" data-line-number="20"><span class="co">#&gt; #   Predictions &lt;list&gt;, ROC &lt;list&gt;, `Confusion Matrix` &lt;list&gt;, `Positive</span></a>
+<a class="sourceLine" id="cb10-20" data-line-number="20"><span class="co">#&gt; #   Predictions &lt;list&gt;, ROC &lt;named list&gt;, `Confusion Matrix` &lt;list&gt;, `Positive</span></a>
 <a class="sourceLine" id="cb10-21" data-line-number="21"><span class="co">#&gt; #   Class` &lt;chr&gt;</span></a></code></pre></div>
 <p>The <code>Predictions</code> for the second model looks as follows:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">ev_<span class="dv">3</span><span class="op">$</span>Predictions[[<span class="dv">2</span>]] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()</a></code></pre></div>
