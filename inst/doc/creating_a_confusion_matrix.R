@@ -30,8 +30,8 @@ cfm
 
 ## -----------------------------------------------------------------------------
 plot_confusion_matrix(cfm, 
-                      targets_col = "target", 
-                      predictions_col = "prediction",
+                      target_col = "target", 
+                      prediction_col = "prediction",
                       counts_col = "n")
 
 ## -----------------------------------------------------------------------------
@@ -65,6 +65,10 @@ conf_mat
 plot_confusion_matrix(conf_mat$`Confusion Matrix`[[1]])
 
 ## -----------------------------------------------------------------------------
+plot_confusion_matrix(conf_mat$`Confusion Matrix`[[1]],
+                      add_sums = TRUE)
+
+## -----------------------------------------------------------------------------
 plot_confusion_matrix(conf_mat$`Confusion Matrix`[[1]], 
                       place_x_axis_above = FALSE)
 
@@ -80,12 +84,26 @@ plot_confusion_matrix(conf_mat$`Confusion Matrix`[[1]],
                       palette = "Greens")
 
 ## -----------------------------------------------------------------------------
-plot_confusion_matrix(conf_mat$`Confusion Matrix`[[1]],
-                      font_counts = font(size = 10,
-                                         angle = 45,
-                                         color = "red"),
-                      add_normalized = FALSE,
-                      add_col_percentages = FALSE,
-                      add_row_percentages = FALSE
-                      )
+plot_confusion_matrix(
+  conf_mat$`Confusion Matrix`[[1]],
+  add_sums = TRUE,
+  sums_settings = sum_tile_settings(
+    palette = "Oranges",
+    label = "Total",
+    tc_tile_border_color = "black"
+  )
+)
+
+## -----------------------------------------------------------------------------
+plot_confusion_matrix(
+  conf_mat$`Confusion Matrix`[[1]],
+  font_counts = font(
+    size = 10,
+    angle = 45,
+    color = "red"
+  ),
+  add_normalized = FALSE,
+  add_col_percentages = FALSE,
+  add_row_percentages = FALSE
+)
 

@@ -52,8 +52,8 @@
 #'  When \code{`type`} is \code{"binomial"}, the predictions can be passed in one of two formats.
 #'
 #'  \subsection{Probabilities (Preferable)}{
-#'  One column with the probability of class being
-#'  the second class alphabetically
+#'  One column with the \strong{probability of class being
+#'  the second class alphabetically}
 #'  (1 if classes are 0 and 1). E.g.:
 #'
 #'  \tabular{rrrrr}{
@@ -63,6 +63,9 @@
 #'   0.375 \tab 0\cr
 #'   ... \tab ...}
 #'  }
+#'
+#'  Note: At the alphabetical ordering of the class labels, they are of type \code{character},
+#'  why e.g. \code{100} would come before \code{7}.
 #'
 #'  \subsection{Classes}{
 #'
@@ -854,7 +857,7 @@ run_evaluate <- function(data,
   data <- data %>% dplyr::ungroup()
 
   # Create temporary prediction column name
-  local_tmp_predictions_col_var <- create_tmp_name(data, "tmp_predictions_col")
+  local_tmp_prediction_col_var <- create_tmp_name(data, "tmp_prediction_col")
   local_tmp_std_col_var <- create_tmp_name(data, "tmp_std_col")
 
   if (!is.null(id_col)) {
@@ -878,22 +881,22 @@ run_evaluate <- function(data,
       id_method = id_method,
       groups_col = local_tmp_grouping_factor_var,
       apply_softmax = FALSE,
-      new_prediction_col_name = local_tmp_predictions_col_var,
+      new_prediction_col_name = local_tmp_prediction_col_var,
       new_std_col_name = local_tmp_std_col_var
     ) %>%
       dplyr::ungroup() %>%
       dplyr::left_join(grouping_keys_with_indices, by = ".group")
 
     if (family == "multinomial") {
-      prediction_cols <- local_tmp_predictions_col_var
+      prediction_cols <- local_tmp_prediction_col_var
     }
 
     # Run ID level evaluation
     evaluations <- run_internal_evaluate_wrapper(
       data = data_for_id_evaluation,
       type = family,
-      predictions_col = prediction_cols,
-      targets_col = target_col,
+      prediction_col = prediction_cols,
+      target_col = target_col,
       id_col = id_col,
       id_method = id_method,
       fold_info_cols = fold_info_cols,
@@ -923,10 +926,10 @@ run_evaluate <- function(data,
         target_col = target_col,
         prediction_cols = prediction_cols,
         apply_softmax = apply_softmax,
-        new_prediction_col_name = local_tmp_predictions_col_var
+        new_prediction_col_name = local_tmp_prediction_col_var
       )
 
-      prediction_cols <- local_tmp_predictions_col_var
+      prediction_cols <- local_tmp_prediction_col_var
     } else {
       if (length(prediction_cols) > 1) {
         stop(paste0("'prediction_cols' must have length 1 when type is '", type, "'."))
@@ -937,8 +940,8 @@ run_evaluate <- function(data,
     evaluations <- run_internal_evaluate_wrapper(
       data = data,
       type = family,
-      predictions_col = prediction_cols,
-      targets_col = target_col,
+      prediction_col = prediction_cols,
+      target_col = target_col,
       models = models,
       fold_info_cols = fold_info_cols,
       fold_and_fold_col = fold_and_fold_col,
@@ -961,8 +964,8 @@ run_evaluate <- function(data,
 
 run_internal_evaluate_wrapper <- function(data,
                                           type,
-                                          predictions_col,
-                                          targets_col,
+                                          prediction_col,
+                                          target_col,
                                           models,
                                           groups_col,
                                           grouping_keys,
@@ -981,7 +984,7 @@ run_internal_evaluate_wrapper <- function(data,
                                           parallel = FALSE) {
   if (type != "gaussian") {
     if (is.null(num_classes)) {
-      num_classes <- length(unique(data[[targets_col]]))
+      num_classes <- length(unique(data[[target_col]]))
     }
   }
 
@@ -1012,8 +1015,8 @@ run_internal_evaluate_wrapper <- function(data,
       internal_evaluate(
         data = data_for_current_group,
         type = type,
-        predictions_col = predictions_col,
-        targets_col = targets_col,
+        prediction_col = prediction_col,
+        target_col = target_col,
         models = model,
         id_col = id_col,
         id_method = id_method,
@@ -1093,8 +1096,8 @@ run_internal_evaluate_wrapper <- function(data,
 
 internal_evaluate <- function(data,
                               type = "gaussian",
-                              predictions_col = "prediction",
-                              targets_col = "target",
+                              prediction_col = "prediction",
+                              target_col = "target",
                               model_was_null_col = NULL,
                               fold_info_cols = list(
                                 rel_fold = "rel_fold",
@@ -1156,8 +1159,8 @@ internal_evaluate <- function(data,
   # Evaluate the predictions
   prediction_evaluation <- internal_evaluate_predictions(
     data = data,
-    predictions_col = predictions_col,
-    targets_col = targets_col,
+    prediction_col = prediction_col,
+    target_col = target_col,
     model_was_null_col = model_was_null_col,
     id_col = id_col,
     id_method = id_method,

@@ -70,7 +70,7 @@
 #'
 #'  As created with the various validation functions in \code{cvms}, like
 #'  \code{\link[cvms:cross_validate_fn]{cross_validate_fn()}}.
-#' @param targets_col Name of column with target levels.
+#' @param target_col Name of column with target levels.
 #' @param probability_cols Name of columns with predicted probabilities.
 #'
 #'  For \strong{binary} classification, this should be \strong{one column} with the probability of the
@@ -571,14 +571,14 @@ call_plot_probabilities_ <- function(data,
   # Prepare extraction of probabilities
   if (probability_of == "target"){
     of_col <- target_col
-    cat_levels <- levels_as_characters(data[[of_col]], drop_unused = TRUE)
+    cat_levels <- levels_as_characters(data[[of_col]], drop_unused = TRUE, sort_levels=TRUE)
   } else if (probability_of == "prediction"){
     of_col <- predicted_class_col
     # Make sure there are all the cat_levels for binomial case
-    cat_levels <- union(
+    cat_levels <- sort(union(
       levels_as_characters(data[[predicted_class_col]], drop_unused = TRUE),
       levels_as_characters(data[[target_col]], drop_unused = TRUE)
-    )
+    ))
   }
 
   # Extract probabilities of target/prediction
