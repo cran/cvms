@@ -9,7 +9,6 @@ knitr::opts_chunk$set(
 
 ## ----warning=FALSE, message=FALSE---------------------------------------------
 library(cvms)
-library(broom)    # tidy()
 library(tibble)   # tibble()
 
 set.seed(1)
@@ -25,7 +24,7 @@ basic_table <- table(d_binomial)
 basic_table
 
 ## -----------------------------------------------------------------------------
-cfm <- tidy(basic_table)
+cfm <- as_tibble(basic_table)
 cfm
 
 ## -----------------------------------------------------------------------------

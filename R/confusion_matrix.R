@@ -164,6 +164,7 @@
 #'  }
 #'  }
 #' @examples
+#' \donttest{
 #' # Attach cvms
 #' library(cvms)
 #'
@@ -198,6 +199,7 @@
 #'   metrics = list("Weighted Accuracy" = TRUE)
 #' )
 #' cm
+#' }
 confusion_matrix <- function(targets,
                              predictions,
                              metrics = list(),
@@ -528,6 +530,10 @@ create_multinomial_confusion_matrix <- function(targets,
 
     support <- one_vs_all_evaluations[["Support"]]
     one_vs_all_evaluations[["Positive Class"]] <- NULL
+
+    # Set names for results within the one_vs_all_evaluations
+    # to their class for easier `bind_rows()` extraction
+    names(one_vs_all_evaluations[["Confusion Matrix"]]) <- one_vs_all_evaluations[["Class"]]
 
     metric_columns <- one_vs_all_evaluations %>%
       base_deselect(cols = c("Class", "Confusion Matrix", "Table", "Support"))

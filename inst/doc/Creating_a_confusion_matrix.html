@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ludvig Renbo Olsen" />
 
-<meta name="date" content="2021-02-17" />
+<meta name="date" content="2021-06-07" />
 
 <title>Creating a confusion matrix with cvms</title>
 
@@ -27,7 +27,14 @@
     </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
@@ -347,7 +354,7 @@ font-size:108%;
 
 <h1 class="title toc-ignore">Creating a confusion matrix with cvms</h1>
 <h4 class="author">Ludvig Renbo Olsen</h4>
-<h4 class="date">2021-02-17</h4>
+<h4 class="date">2021-06-07</h4>
 <div class="abstract">
 <p class="abstract">Abstract</p>
 In this vignette, we learn how to create and plot a confusion matrix from a set of classification predictions. The functions of interest are <code>evaluate()</code> and <code>plot_confusion_matrix()</code>.  <br />
@@ -392,12 +399,12 @@ Contact the author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkg
 <tr class="even">
 <td align="left">0</td>
 <td align="left">1</td>
-<td align="left">False Negative</td>
+<td align="left">False Positive</td>
 </tr>
 <tr class="odd">
 <td align="left">1</td>
 <td align="left">0</td>
-<td align="left">False Positive</td>
+<td align="left">False Negative</td>
 </tr>
 <tr class="even">
 <td align="left">1</td>
@@ -414,10 +421,9 @@ Contact the author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkg
 <div id="attach-packages-and-set-seed-for-reproducibility" class="section level2">
 <h2>Attach packages and set seed for reproducibility</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(cvms)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(broom)    <span class="co"># tidy()</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(tibble)   <span class="co"># tibble()</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(tibble)   <span class="co"># tibble()</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a></code></pre></div>
 </div>
 <div id="binomial-data" class="section level2">
 <h2>Binomial data</h2>
@@ -452,18 +458,16 @@ Contact the author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkg
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; target  0  1</span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt;      0 15 17</span></a>
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;      1 25 43</span></a></code></pre></div>
-<p>In order to plot it with <code>ggplot2</code>, we convert it to a data frame with <code>broom::tidy()</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">cfm &lt;-<span class="st"> </span><span class="kw">tidy</span>(basic_table)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; Warning: 'tidy.table' is deprecated.</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; See help(&quot;Deprecated&quot;)</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">cfm</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; # A tibble: 4 x 3</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;   target prediction     n</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;      &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; 1 0      0             15</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; 2 1      0             25</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; 3 0      1             17</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; 4 1      1             43</span></a></code></pre></div>
+<p>In order to plot it with <code>ggplot2</code>, we convert it to a data frame with <code>parameters::model_parameters()</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">cfm &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(basic_table)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">cfm</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; # A tibble: 4 x 3</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;   target prediction     n</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;      &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; 1 0      0             15</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; 2 1      0             25</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; 3 0      1             17</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; 4 1      1             43</span></a></code></pre></div>
 <p>We can now plot it with <code>plot_confusion_matrix()</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">plot_confusion_matrix</span>(cfm, </a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">                      <span class="dt">target_col =</span> <span class="st">&quot;target&quot;</span>, </a>
@@ -485,14 +489,13 @@ Contact the author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkg
 <a class="sourceLine" id="cb6-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb6-6" data-line-number="6">eval</a>
 <a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; # A tibble: 1 x 19</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt;   `Balanced Accur… Accuracy    F1 Sensitivity Specificity `Pos Pred Value`</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt;              &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;            &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; 1            0.551    0.580 0.672       0.632       0.469            0.717</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; # … with 13 more variables: `Neg Pred Value` &lt;dbl&gt;, AUC &lt;dbl&gt;, `Lower</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; #   CI` &lt;dbl&gt;, `Upper CI` &lt;dbl&gt;, Kappa &lt;dbl&gt;, MCC &lt;dbl&gt;, `Detection</span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt; #   Rate` &lt;dbl&gt;, `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt; #   Predictions &lt;list&gt;, ROC &lt;named list&gt;, `Confusion Matrix` &lt;list&gt;,</span></a>
-<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; #   Process &lt;list&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt;   `Balanced Accuracy` Accuracy    F1 Sensitivity Specificity `Pos Pred Value`</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt;                 &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;            &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; 1               0.551     0.58 0.672       0.632       0.469            0.717</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; # … with 13 more variables: Neg Pred Value &lt;dbl&gt;, AUC &lt;dbl&gt;, Lower CI &lt;dbl&gt;,</span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; #   Upper CI &lt;dbl&gt;, Kappa &lt;dbl&gt;, MCC &lt;dbl&gt;, Detection Rate &lt;dbl&gt;,</span></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt; #   Detection Prevalence &lt;dbl&gt;, Prevalence &lt;dbl&gt;, Predictions &lt;list&gt;,</span></a>
+<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt; #   ROC &lt;named list&gt;, Confusion Matrix &lt;list&gt;, Process &lt;list&gt;</span></a></code></pre></div>
 <p>The output contains the confusion matrix tibble:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">conf_mat &lt;-<span class="st"> </span>eval<span class="op">$</span><span class="st">`</span><span class="dt">Confusion Matrix</span><span class="st">`</span>[[<span class="dv">1</span>]]</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">conf_mat</a>
@@ -536,12 +539,12 @@ Contact the author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkg
 <a class="sourceLine" id="cb10-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4">conf_mat</a>
 <a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; # A tibble: 1 x 15</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;   `Confusion Matr… Table `Class Level Re… `Overall Accura… `Balanced Accur…</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;   &lt;list&gt;           &lt;lis&gt; &lt;list&gt;                      &lt;dbl&gt;            &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt; 1 &lt;tibble [9 × 3]&gt; &lt;tab… &lt;tibble [3 × 14…             0.34            0.502</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;   `Confusion Matri… Table    `Class Level Res… `Overall Accura… `Balanced Accur…</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;   &lt;list&gt;            &lt;list&gt;   &lt;list&gt;                       &lt;dbl&gt;            &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt; 1 &lt;tibble [9 × 3]&gt;  &lt;table … &lt;tibble [3 × 14]&gt;             0.34            0.502</span></a>
 <a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt; # … with 10 more variables: F1 &lt;dbl&gt;, Sensitivity &lt;dbl&gt;, Specificity &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt; #   `Pos Pred Value` &lt;dbl&gt;, `Neg Pred Value` &lt;dbl&gt;, Kappa &lt;dbl&gt;, MCC &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt; #   `Detection Rate` &lt;dbl&gt;, `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt; #   Pos Pred Value &lt;dbl&gt;, Neg Pred Value &lt;dbl&gt;, Kappa &lt;dbl&gt;, MCC &lt;dbl&gt;,</span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt; #   Detection Rate &lt;dbl&gt;, Detection Prevalence &lt;dbl&gt;, Prevalence &lt;dbl&gt;</span></a></code></pre></div>
 <p>The output includes the confusion matrix tibble and related metrics.</p>
 <p>Let’s plot the multiclass confusion matrix:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">plot_confusion_matrix</span>(conf_mat<span class="op">$</span><span class="st">`</span><span class="dt">Confusion Matrix</span><span class="st">`</span>[[<span class="dv">1</span>]])</a></code></pre></div>

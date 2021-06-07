@@ -2,7 +2,7 @@
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/vignette_conf_mat-",
+  fig.path = "man/figures/vignette_cv_custom_fn-",
   dpi = 92,
   fig.retina = 2
 )
@@ -508,6 +508,6 @@ overall_confusion_matrix <- cv_5$`Confusion Matrix`[[11]] %>%
 overall_confusion_matrix %>% kable()
 
 # Plot the overall confusion matrix
-plot_confusion_matrix(overall_confusion_matrix)
+plot_confusion_matrix(overall_confusion_matrix, add_sums = TRUE)
 
 
