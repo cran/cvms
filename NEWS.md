@@ -1,4 +1,8 @@
 
+# cvms 1.3.2
+
+* Prepares package for `checkmate 2.1.0`.
+
 # cvms 1.3.1
 
 * Replaces deprecated uses of `ggplot2` functions. Now compatible with `ggplot2 3.3.4`.
