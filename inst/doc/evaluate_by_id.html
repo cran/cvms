@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ludvig Renbo Olsen" />
 
-<meta name="date" content="2021-10-05" />
+<meta name="date" content="2021-11-14" />
 
 <title>Evaluate by ID/group</title>
 
@@ -152,7 +152,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <h1 class="title toc-ignore">Evaluate by ID/group</h1>
 <h4 class="author">Ludvig Renbo Olsen</h4>
-<h4 class="date">2021-10-05</h4>
+<h4 class="date">2021-11-14</h4>
 <div class="abstract">
 <p class="abstract">Abstract</p>
 <p>In this vignette, we learn how to evaluate predictions on the ID level with <code>evaluate()</code>.  <br />
@@ -649,10 +649,10 @@ Contact the author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkg
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>ev_3</span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 20</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   model `Balanced Accuracy` Accuracy    F1 Sensitivity Specificity `Pos Pred Value`</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;               &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;            &lt;dbl&gt;</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 1                   0.292      0.3 0.364       0.333        0.25              0.4</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 2                   0.375      0.4 0.5         0.5          0.25              0.5</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   model `Balanced Accur… Accuracy    F1 Sensitivity Specificity `Pos Pred Value`</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;            &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;            &lt;dbl&gt;</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 1                0.292      0.3 0.364       0.333        0.25              0.4</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 2                0.375      0.4 0.5         0.5          0.25              0.5</span></span>
 <span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 13 more variables: Neg Pred Value &lt;dbl&gt;, AUC &lt;dbl&gt;, Lower CI &lt;dbl&gt;,</span></span>
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Upper CI &lt;dbl&gt;, Kappa &lt;dbl&gt;, MCC &lt;dbl&gt;, Detection Rate &lt;dbl&gt;,</span></span>
 <span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Detection Prevalence &lt;dbl&gt;, Prevalence &lt;dbl&gt;, Predictions &lt;list&gt;,</span></span>
