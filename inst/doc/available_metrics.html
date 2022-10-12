@@ -12,11 +12,23 @@
 
 <meta name="author" content="Ludvig Renbo Olsen" />
 
-<meta name="date" content="2022-08-26" />
+<meta name="date" content="2022-10-12" />
 
 <title>The available metrics in cvms</title>
 
-<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -43,8 +55,213 @@
 
 
 
-<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
-<link rel="stylesheet" href="data:text/css,h1%20%7B%0Afont%2Dsize%3A190%25%3B%0Apadding%2Dtop%3A20px%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%200%2E5px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Aimg%20%7B%0Amargin%2Dtop%3A%2020px%3B%0Amargin%2Dbottom%3A%2020px%3B%0Aborder%3A0%3B%0A%7D%0Ap%20%7B%0Afont%2Dsize%3A108%25%3B%0Apadding%2Dbottom%3A7px%3B%0A%7D%0Atable%20td%20%7B%0Afont%2Dsize%3A103%25%3B%0A%7D%0Atable%20td%20%2Emath%20%7B%0Afont%2Dsize%3A108%25%3B%0A%7D%0A" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+<style type="text/css">h1 {
+font-size:190%;
+padding-top:20px;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 0.5px solid #777;
+margin: 28px 0;
+}
+img {
+margin-top: 20px;
+margin-bottom: 20px;
+border:0;
+}
+p {
+font-size:108%;
+padding-bottom:7px;
+}
+table td {
+font-size:103%;
+}
+table td .math {
+font-size:108%;
+}
+</style>
 
 
 
@@ -58,10 +275,11 @@
 
 <h1 class="title toc-ignore">The available metrics in cvms</h1>
 <h4 class="author">Ludvig Renbo Olsen</h4>
-<h4 class="date">2022-08-26</h4>
+<h4 class="date">2022-10-12</h4>
 <div class="abstract">
 <p class="abstract">Abstract</p>
-<p>This vignette lists the available metrics in <code>cvms</code>, along with their formulas.  <br />
+<p>This vignette lists the available metrics in <code>cvms</code>, along
+with their formulas.  <br />
  <br />
 Contact the author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkgs@ludvigolsen.dk</a>  <br />
  </p>
@@ -70,23 +288,38 @@ Contact the author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkg
 
 <div id="TOC">
 <ul>
-<li><a href="#introduction">Introduction</a></li>
-<li><a href="#gaussian-metrics">Gaussian Metrics</a></li>
-<li><a href="#binomial-metrics">Binomial Metrics</a></li>
-<li><a href="#multinomial-metrics">Multinomial Metrics</a></li>
-<li><a href="#external-metrics">External metrics</a></li>
+<li><a href="#introduction" id="toc-introduction">Introduction</a></li>
+<li><a href="#gaussian-metrics" id="toc-gaussian-metrics">Gaussian
+Metrics</a></li>
+<li><a href="#binomial-metrics" id="toc-binomial-metrics">Binomial
+Metrics</a></li>
+<li><a href="#multinomial-metrics" id="toc-multinomial-metrics">Multinomial Metrics</a></li>
+<li><a href="#external-metrics" id="toc-external-metrics">External
+metrics</a></li>
 </ul>
 </div>
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p><code>cvms</code> has a large set of metrics for model evaluation. In this document, we list the metrics and their formulas.</p>
-<p>Some of the metrics in the package are computed with external packages. These are listed at the bottom.</p>
-<p>Some of the metrics are disabled by default to avoid cluttering the output tibble. These can be enabled in the <code>metrics</code> argument. This argument takes a list of named booleans, like <code>list(&quot;Accuracy&quot; = FALSE, &quot;Weighted F1&quot; = TRUE)</code>. This can be generated with the helper functions <code>gaussian_metrics()</code>, <code>binomial_metrics()</code>, and <code>multinomial_metrics()</code>. If, for instance, we only wish to calculate the <code>RMSE</code> metric for our regression model, we can use either <code>list(&quot;all&quot; = FALSE, &quot;RMSE&quot; = TRUE)</code> or <code>gaussian_metrics(all = FALSE, rmse = TRUE)</code>.</p>
+<p><code>cvms</code> has a large set of metrics for model evaluation. In
+this document, we list the metrics and their formulas.</p>
+<p>Some of the metrics in the package are computed with external
+packages. These are listed at the bottom.</p>
+<p>Some of the metrics are disabled by default to avoid cluttering the
+output tibble. These can be enabled in the <code>metrics</code>
+argument. This argument takes a list of named booleans, like
+<code>list(&quot;Accuracy&quot; = FALSE, &quot;Weighted F1&quot; = TRUE)</code>. This can be
+generated with the helper functions <code>gaussian_metrics()</code>,
+<code>binomial_metrics()</code>, and <code>multinomial_metrics()</code>.
+If, for instance, we only wish to calculate the <code>RMSE</code> metric
+for our regression model, we can use either
+<code>list(&quot;all&quot; = FALSE, &quot;RMSE&quot; = TRUE)</code> or
+<code>gaussian_metrics(all = FALSE, rmse = TRUE)</code>.</p>
 </div>
 <div id="gaussian-metrics" class="section level2">
 <h2>Gaussian Metrics</h2>
-<p>The metrics used to evaluate regression tasks (like linear regression):</p>
+<p>The metrics used to evaluate regression tasks (like linear
+regression):</p>
 <table>
 <colgroup>
 <col width="32%" />
@@ -122,12 +355,16 @@ Contact the author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkg
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left"><span class="math inline">\({\scriptstyle \operatorname{IQR}(x)}\)</span></td>
+<td align="left"><span class="math inline">\({\scriptstyle
+\operatorname{IQR}(x)}\)</span></td>
 <td align="left">Interquartile Range</td>
-<td align="left"><span class="math inline">\({\scriptstyle \operatorname{quantile}(x, 3/4) - \operatorname{quantile}(x, 1/4)}\)</span></td>
+<td align="left"><span class="math inline">\({\scriptstyle
+\operatorname{quantile}(x, 3/4) - \operatorname{quantile}(x,
+1/4)}\)</span></td>
 </tr>
 <tr class="even">
-<td align="left"><span class="math inline">\(\lvert x \rvert\)</span></td>
+<td align="left"><span class="math inline">\(\lvert x
+\rvert\)</span></td>
 <td align="left">Absolute value of <span class="math inline">\(x\)</span></td>
 <td align="left"></td>
 </tr>
@@ -170,22 +407,26 @@ Contact the author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkg
 <tr class="odd">
 <td align="left">Relative Absolute Error</td>
 <td align="left">RAE</td>
-<td align="left"><span class="math inline">\(\frac{\sum_{i=1}^{n}\lvert\hat{y}_{i}-y_{i}\rvert}{\sum_{i=1}^{n}\lvert y_{i}-\bar{y}\rvert}\)</span></td>
+<td align="left"><span class="math inline">\(\frac{\sum_{i=1}^{n}\lvert\hat{y}_{i}-y_{i}\rvert}{\sum_{i=1}^{n}\lvert
+y_{i}-\bar{y}\rvert}\)</span></td>
 </tr>
 <tr class="even">
 <td align="left">Relative Squared Error</td>
 <td align="left">RSE</td>
-<td align="left"><span class="math inline">\(\frac{\sum_{i=1}^{n}(\hat{y}_{i}-y_{i})^2}{\sum_{i=1}^{n}(y_{i} - \bar{y})^2}\)</span></td>
+<td align="left"><span class="math inline">\(\frac{\sum_{i=1}^{n}(\hat{y}_{i}-y_{i})^2}{\sum_{i=1}^{n}(y_{i}
+- \bar{y})^2}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">Root Relative Squared Error</td>
 <td align="left">RRSE</td>
-<td align="left"><span class="math inline">\({\scriptstyle \sqrt{RSE} }\)</span></td>
+<td align="left"><span class="math inline">\({\scriptstyle \sqrt{RSE}
+}\)</span></td>
 </tr>
 <tr class="even">
 <td align="left">Mean Absolute Percentage Error</td>
 <td align="left">MAPE</td>
-<td align="left"><span class="math inline">\(\frac{1}{n}\sum_{i=1}^{n} \lvert \frac{\hat{y}_{i}-y_{i}}{y_{i}} \rvert\)</span></td>
+<td align="left"><span class="math inline">\(\frac{1}{n}\sum_{i=1}^{n}
+\lvert \frac{\hat{y}_{i}-y_{i}}{y_{i}} \rvert\)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">Normalized RMSE</br>(by target range)</td>
@@ -215,12 +456,14 @@ Contact the author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkg
 <tr class="even">
 <td align="left">Total Absolute Error</td>
 <td align="left">TAE</td>
-<td align="left"><span class="math inline">\({\scriptstyle \sum_{i=1}^{n}\lvert\hat{y}_{i}-y_{i}\rvert}\)</span></td>
+<td align="left"><span class="math inline">\({\scriptstyle
+\sum_{i=1}^{n}\lvert\hat{y}_{i}-y_{i}\rvert}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">Total Squared Error</td>
 <td align="left">TSE</td>
-<td align="left"><span class="math inline">\({\scriptstyle \sum_{i=1}^{n}(\hat{y}_{i}-y_{i})^2}\)</span></td>
+<td align="left"><span class="math inline">\({\scriptstyle
+\sum_{i=1}^{n}(\hat{y}_{i}-y_{i})^2}\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -228,12 +471,15 @@ Contact the author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkg
 <div id="binomial-metrics" class="section level2">
 <h2>Binomial Metrics</h2>
 <p>The metrics used to evaluate binary classification tasks:</p>
-<p>Based on a confusion matrix, we first count the True Positives (TP), True Negatives (TN), False Positives (FP), and False Negatives (FN). Below, <code>1</code> is the positive class.</p>
+<p>Based on a confusion matrix, we first count the True Positives (TP),
+True Negatives (TN), False Positives (FP), and False Negatives (FN).
+Below, <code>1</code> is the positive class.</p>
 <pre><code>#&gt;           Target
 #&gt; Prediction 0  1 
 #&gt;          0 TN FN
 #&gt;          1 FP TP</code></pre>
-<p>With these counts, we can calculate the following metrics. Note, that the <code>Kappa</code> metric normalizes the counts to percentages.</p>
+<p>With these counts, we can calculate the following metrics. Note, that
+the <code>Kappa</code> metric normalizes the counts to percentages.</p>
 <table>
 <colgroup>
 <col width="27%" />
@@ -251,99 +497,140 @@ Contact the author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkg
 <tr class="odd">
 <td align="left">Accuracy</td>
 <td align="left"></td>
-<td align="left"><span class="math inline">\(\frac{TP + TN}{TP + TN + FP + FN}\)</span></td>
+<td align="left"><span class="math inline">\(\frac{TP + TN}{TP + TN + FP
++ FN}\)</span></td>
 </tr>
 <tr class="even">
 <td align="left">Balanced Accuracy</td>
 <td align="left"></td>
-<td align="left"><span class="math inline">\(\frac{Sensitivity + Specificity}{2}\)</span></td>
+<td align="left"><span class="math inline">\(\frac{Sensitivity +
+Specificity}{2}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">Sensitivity,</br>Recall,</br>True Positive Rate</td>
 <td align="left"></td>
-<td align="left"><span class="math inline">\(\frac{TP}{TP + FN}\)</span></td>
+<td align="left"><span class="math inline">\(\frac{TP}{TP +
+FN}\)</span></td>
 </tr>
 <tr class="even">
 <td align="left">Specificity,</br>True Negative Rate</td>
 <td align="left"></td>
-<td align="left"><span class="math inline">\(\frac{TN}{TN + FP}\)</span></td>
+<td align="left"><span class="math inline">\(\frac{TN}{TN +
+FP}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">Positive Predictive Value, </br>Precision</td>
 <td align="left">Pos Pred Value</td>
-<td align="left"><span class="math inline">\(\frac{TP}{TP + FP}\)</span></td>
+<td align="left"><span class="math inline">\(\frac{TP}{TP +
+FP}\)</span></td>
 </tr>
 <tr class="even">
 <td align="left">Negative Predictive Value</td>
 <td align="left">Neg Pred Value</td>
-<td align="left"><span class="math inline">\(\frac{TN}{TN + FN}\)</span></td>
+<td align="left"><span class="math inline">\(\frac{TN}{TN +
+FN}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">F1 score</td>
 <td align="left"></td>
-<td align="left"><span class="math inline">\(2 \cdot \frac{Pos Pred Value \cdot Sensitivity}{Pos Pred Value + Sensitivity}\)</span></td>
+<td align="left"><span class="math inline">\(2 \cdot \frac{Pos Pred
+Value \cdot Sensitivity}{Pos Pred Value + Sensitivity}\)</span></td>
 </tr>
 <tr class="even">
 <td align="left">Matthews Correlation Coefficient</td>
 <td align="left">MCC</td>
-<td align="left"><span class="math inline">\(\frac{TP \cdot TN - FP \cdot FN}{\sqrt{(TP + FP)(TP + FN)(TN + FP) (TN + FN)}}\)</span></br><font size="1.5">Note: When the denominator is 0, we set it to 1 to avoid <code>NaN</code>.</font></td>
+<td align="left"><span class="math inline">\(\frac{TP \cdot TN - FP
+\cdot FN}{\sqrt{(TP + FP)(TP + FN)(TN + FP) (TN +
+FN)}}\)</span></br><font size="1.5">Note: When the denominator is 0, we
+set it to 1 to avoid <code>NaN</code>.</font></td>
 </tr>
 <tr class="odd">
 <td align="left">Detection Rate</td>
 <td align="left"></td>
-<td align="left"><span class="math inline">\(\frac{TP}{TP + FN + TN + FP}\)</span></td>
+<td align="left"><span class="math inline">\(\frac{TP}{TP + FN + TN +
+FP}\)</span></td>
 </tr>
 <tr class="even">
 <td align="left">Detection Prevalence</td>
 <td align="left"></td>
-<td align="left"><span class="math inline">\(\frac{TP + FP}{TP + FN + TN + FP}\)</span></td>
+<td align="left"><span class="math inline">\(\frac{TP + FP}{TP + FN + TN
++ FP}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">Prevalence</td>
 <td align="left"></td>
-<td align="left"><span class="math inline">\(\frac{TP + FN}{TP + FN + TN + FP}\)</span></td>
+<td align="left"><span class="math inline">\(\frac{TP + FN}{TP + FN + TN
++ FP}\)</span></td>
 </tr>
 <tr class="even">
 <td align="left">Threat Score</td>
 <td align="left"></td>
-<td align="left"><span class="math inline">\(\frac{TP}{TP + FN + FP}\)</span></td>
+<td align="left"><span class="math inline">\(\frac{TP}{TP + FN +
+FP}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">False Negative Rate</td>
 <td align="left"></td>
-<td align="left"><span class="math inline">\({\scriptstyle 1 - Sensitivity}\)</span></td>
+<td align="left"><span class="math inline">\({\scriptstyle 1 -
+Sensitivity}\)</span></td>
 </tr>
 <tr class="even">
 <td align="left">False Positive Rate</td>
 <td align="left"></td>
-<td align="left"><span class="math inline">\({\scriptstyle 1 - Specificity}\)</span></td>
+<td align="left"><span class="math inline">\({\scriptstyle 1 -
+Specificity}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">False Discovery Rate</td>
 <td align="left"></td>
-<td align="left"><span class="math inline">\({\scriptstyle 1 - Pos Pred Value}\)</span></td>
+<td align="left"><span class="math inline">\({\scriptstyle 1 - Pos Pred
+Value}\)</span></td>
 </tr>
 <tr class="even">
 <td align="left">False Omission Rate</td>
 <td align="left"></td>
-<td align="left"><span class="math inline">\({\scriptstyle 1 - Neg Pred Value}\)</span></td>
+<td align="left"><span class="math inline">\({\scriptstyle 1 - Neg Pred
+Value}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">Kappa</td>
 <td align="left"></td>
-<td align="left"><font size="1.5">For Kappa, the counts (<code>TP</code>, <code>TN</code>, <code>FP</code>, <code>FN</code>) are normalized to percentages (summing to 1). Then:</font></br> <span class="math inline">\({\scriptstyle p_{observed} = TP + TN}\)</span> </br> <span class="math inline">\({\scriptstyle p_{expected} = (TN + FP)(TN + FN) + (FN + TP)(FP + TP)}\)</span> </br> <span class="math inline">\(Kappa = \frac{p_{observed} - p_{expected}}{1 - p_{expected}}\)</span></td>
+<td align="left"><font size="1.5">For Kappa, the counts
+(<code>TP</code>, <code>TN</code>, <code>FP</code>, <code>FN</code>) are
+normalized to percentages (summing to 1). Then:</font></br> <span class="math inline">\({\scriptstyle p_{observed} = TP + TN}\)</span>
+</br> <span class="math inline">\({\scriptstyle p_{expected} = (TN +
+FP)(TN + FN) + (FN + TP)(FP + TP)}\)</span> </br> <span class="math inline">\(Kappa = \frac{p_{observed} - p_{expected}}{1 -
+p_{expected}}\)</span></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div id="multinomial-metrics" class="section level2">
 <h2>Multinomial Metrics</h2>
-<p>We have four types of metrics for the multiclass classification evaluation:</p>
-<p><strong>Overall</strong> metrics simply look at whether a prediction is correct or not. Currently, <code>cvms</code> only has the <code>Overall Accuracy</code>.</p>
-<p>The <strong>Macro</strong>/<strong>Average</strong> metrics are based on <em>one-vs-all</em> evaluations of each class. In a <em>one-vs-all</em> evaluation, we set all predictions and targets for the current class to <code>1</code> and all others to <code>0</code> ( <span class="math inline">\({\scriptstyle y_{o,c} = 1 \text{ if } y_{o} = c \text{ else } 0}\)</span> and <span class="math inline">\({\scriptstyle \hat{y}_{o,c} = 1 \text{ if } \hat{y} _{o} = c \text{ else } 0}\)</span> ) and perform a binomial evaluation. Once done for all classes, we average the results. Note that this is sometimes referred to as one-vs-rest, as it is the current class against the rest of the classes.</p>
+<p>We have four types of metrics for the multiclass classification
+evaluation:</p>
+<p><strong>Overall</strong> metrics simply look at whether a prediction
+is correct or not. Currently, <code>cvms</code> only has the
+<code>Overall Accuracy</code>.</p>
+<p>The <strong>Macro</strong>/<strong>Average</strong> metrics are based
+on <em>one-vs-all</em> evaluations of each class. In a
+<em>one-vs-all</em> evaluation, we set all predictions and targets for
+the current class to <code>1</code> and all others to <code>0</code> (
+<span class="math inline">\({\scriptstyle y_{o,c} = 1 \text{ if } y_{o}
+= c \text{ else } 0}\)</span> and <span class="math inline">\({\scriptstyle \hat{y}_{o,c} = 1 \text{ if }
+\hat{y} _{o} = c \text{ else } 0}\)</span> ) and perform a binomial
+evaluation. Once done for all classes, we average the results. Note that
+this is sometimes referred to as one-vs-rest, as it is the current class
+against the rest of the classes.</p>
 <!-- Note that the space between \hat{y} and _{o} has to be there for the rendering to work -->
-<p>With a few exceptions (<code>AUC</code> and <code>MCC</code>), the metrics in the multinomial outputs that share their name with the <em>binomial metrics</em> are macro metrics. <code>AUC</code> and <code>MCC</code> instead have specific <strong>multiclass variants</strong>.</p>
-<p>The <strong>Weighted</strong> metrics are averages, similar to the macro metrics, but weighted by the <code>Support</code> for each class.</p>
+<p>With a few exceptions (<code>AUC</code> and <code>MCC</code>), the
+metrics in the multinomial outputs that share their name with the
+<em>binomial metrics</em> are macro metrics. <code>AUC</code> and
+<code>MCC</code> instead have specific <strong>multiclass
+variants</strong>.</p>
+<p>The <strong>Weighted</strong> metrics are averages, similar to the
+macro metrics, but weighted by the <code>Support</code> for each
+class.</p>
 <table>
 <colgroup>
 <col width="20%" />
@@ -361,27 +648,49 @@ Contact the author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkg
 <tr class="odd">
 <td align="left">Overall Accuracy</td>
 <td align="left"></td>
-<td align="left"><span class="math inline">\(\frac{Correct}{Correct + Incorrect}\)</span></td>
+<td align="left"><span class="math inline">\(\frac{Correct}{Correct +
+Incorrect}\)</span></td>
 </tr>
 <tr class="even">
 <td align="left">Macro Metric</td>
 <td align="left"></td>
-<td align="left"><span class="math inline">\({\scriptstyle \frac{1}{\lvert C \rvert}\sum_{c}^{C} metric_{c}}\)</span></td>
+<td align="left"><span class="math inline">\({\scriptstyle
+\frac{1}{\lvert C \rvert}\sum_{c}^{C} metric_{c}}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">Support</td>
 <td align="left"></td>
-<td align="left"><span class="math inline">\({\scriptstyle support_c = \lvert \{ o \in O : o=c \} \rvert \quad \forall c \in C}\)</span></br><font size="1.5">I.e., a count of the class in the target column.</br> <span class="math inline">\(C\)</span>: the set of classes; <span class="math inline">\(O\)</span>: the observations.</br> <span class="math inline">\(\lvert x \rvert\)</span> denotes length of <span class="math inline">\(x\)</span>.</font></td>
+<td align="left"><span class="math inline">\({\scriptstyle support_c =
+\lvert \{ o \in O : o=c \} \rvert \quad \forall c \in
+C}\)</span></br><font size="1.5">I.e., a count of the class in the
+target column.</br> <span class="math inline">\(C\)</span>: the set of
+classes; <span class="math inline">\(O\)</span>: the observations.</br>
+<span class="math inline">\(\lvert x \rvert\)</span> denotes length of
+<span class="math inline">\(x\)</span>.</font></td>
 </tr>
 <tr class="even">
 <td align="left">Weighted metric</td>
 <td align="left"></td>
-<td align="left"><span class="math inline">\(\frac{\sum_{c}^{C} metric_{c} \cdot support_{c}}{\sum_{c}^{C} support_{c}}\)</span></td>
+<td align="left"><span class="math inline">\(\frac{\sum_{c}^{C}
+metric_{c} \cdot support_{c}}{\sum_{c}^{C} support_{c}}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">Multiclass MCC</td>
 <td align="left">MCC</td>
-<td align="left"><span class="math inline">\({\scriptstyle \frac{N \operatorname{Tr}(C)-\sum_{k l} \tilde{\mathcal{C}}_{k} \hat{\mathcal{C}}_{l}}{\sqrt{N^{2}-\sum_{k l} \tilde{\mathcal{C}}_{k}\left(\hat{\mathcal{C}}^{\mathrm{T}}\right)_{l}} \sqrt{N^{2}-\sum_{k l}\left(\tilde{C}^{\mathrm{T}}\right)_{k} \hat{C}_{l}}} }\)</span> </br><font size="1.5"> <span class="math inline">\(N\)</span>: number of samples</br> <span class="math inline">\(C\)</span>: a <span class="math inline">\(K \times K\)</span> confusion matrix</br> <span class="math inline">\(Tr(C)\)</span>: Number of correct predictions</br> <span class="math inline">\(\tilde{\mathcal{C}}_{k}\)</span>: <span class="math inline">\(k\)</span>th row of <span class="math inline">\(C\)</span> ; <span class="math inline">\(\hat{C}_{l}\)</span>: <span class="math inline">\(l\)</span>th column of <span class="math inline">\(C\)</span></br> <span class="math inline">\(C^{T}\)</span>: <span class="math inline">\(C\)</span> transposed</br> Note: When the computation is <code>NaN</code>, we return <code>0</code>.</br>Code was ported from <a href="https://github.com/scikit-learn/scikit-learn/blob/95d4f0841/sklearn/metrics/_classification.py#L821" target="_blank">scikit-learn</a>.</br>Gorodkin, J. (2004). Comparing two K-category assignments by a K-category correlation coefficient. Computational biology and chemistry, 28(5-6), 367-374.</font></td>
+<td align="left"><span class="math inline">\({\scriptstyle \frac{N
+\operatorname{Tr}(C)-\sum_{k l} \tilde{\mathcal{C}}_{k}
+\hat{\mathcal{C}}_{l}}{\sqrt{N^{2}-\sum_{k l}
+\tilde{\mathcal{C}}_{k}\left(\hat{\mathcal{C}}^{\mathrm{T}}\right)_{l}}
+\sqrt{N^{2}-\sum_{k l}\left(\tilde{C}^{\mathrm{T}}\right)_{k}
+\hat{C}_{l}}} }\)</span> </br><font size="1.5"> <span class="math inline">\(N\)</span>: number of samples</br> <span class="math inline">\(C\)</span>: a <span class="math inline">\(K \times
+K\)</span> confusion matrix</br> <span class="math inline">\(Tr(C)\)</span>: Number of correct predictions</br>
+<span class="math inline">\(\tilde{\mathcal{C}}_{k}\)</span>: <span class="math inline">\(k\)</span>th row of <span class="math inline">\(C\)</span> ; <span class="math inline">\(\hat{C}_{l}\)</span>: <span class="math inline">\(l\)</span>th column of <span class="math inline">\(C\)</span></br> <span class="math inline">\(C^{T}\)</span>: <span class="math inline">\(C\)</span> transposed</br> Note: When the
+computation is <code>NaN</code>, we return <code>0</code>.</br>Code was
+ported from
+<a href="https://github.com/scikit-learn/scikit-learn/blob/95d4f0841/sklearn/metrics/_classification.py#L821" target="_blank">scikit-learn</a>.</br>Gorodkin,
+J. (2004). Comparing two K-category assignments by a K-category
+correlation coefficient. Computational biology and chemistry, 28(5-6),
+367-374.</font></td>
 </tr>
 </tbody>
 </table>
@@ -390,6 +699,12 @@ Contact the author at <a href="mailto:r-pkgs@ludvigolsen.dk" class="email">r-pkg
 <h2>External metrics</h2>
 <p>These metrics are calculated by other packages:</p>
 <table>
+<colgroup>
+<col width="25%" />
+<col width="20%" />
+<col width="25%" />
+<col width="28%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">Metric name</th>
