@@ -127,7 +127,7 @@
 #'  N.B. \strong{Multinomial models only}.
 #' @param cutoff Threshold for predicted classes. (Numeric)
 #'
-#' N.B. \strong{Binomial models only}.
+#'  N.B. \strong{Binomial models only}.
 #' @param positive Level from dependent variable to predict.
 #'  Either as character (\emph{preferable}) or level index (\code{1} or \code{2} - alphabetically).
 #'
@@ -139,9 +139,9 @@
 #'
 #'  Used when calculating confusion matrix metrics and creating \code{ROC} curves.
 #'
-#'  The \code{Positive Class} column in the output can be used to verify this setting.
+#'  The \code{Process} column in the output can be used to verify this setting.
 #'
-#'  N.B. Only affects the evaluation metrics.
+#'  N.B. Only affects the evaluation metrics. \strong{Does NOT affect what the probabilities are of (always the second class alphabetically).}
 #'
 #'  N.B. \strong{Binomial models only}.
 #' @param parallel Whether to run evaluations in parallel,
@@ -788,15 +788,24 @@ run_evaluate <- function(data,
                "t be either numeric or character."))
     }
 
-    if (is.numeric(data[[prediction_cols]]) && (
-        max(data[[prediction_cols]]) > 1 ||
-        min(data[[prediction_cols]]) < 0)) {
-      assert_collection$push(
-        paste0(
-          "When 'type' is 'binomial' and 'data[[prediction_cols]]' ",
-          "is numeric, the values in 'data[[prediction_cols]]' must be b",
-          "etween 0 and 1."
-        ))
+    if (is.numeric(data[[prediction_cols]])){
+      if (max(data[[prediction_cols]]) > 1 ||
+          min(data[[prediction_cols]]) < 0) {
+        assert_collection$push(
+          paste0(
+            "When 'type' is 'binomial' and 'data[[prediction_cols]]' ",
+            "is numeric, the values in 'data[[prediction_cols]]' must be b",
+            "etween 0 and 1."
+          ))
+      }
+
+      # One may believe that setting the `positive` argument to the name
+      # of a class should mean that probabilities > `cutoff` would be
+      # considered that class, but this is not the case, so we
+      # make the user aware of this (once)
+      if (is.character(positive) && positive != sort(unique(as.character(data[[target_col]])))[[2]]){
+        inform_about_positive_no_effect_on_probs(positive=positive)
+      }
     }
     checkmate::reportAssertions(assert_collection)
 
