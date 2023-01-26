@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ludvig Renbo Olsen" />
 
-<meta name="date" content="2023-01-04" />
+<meta name="date" content="2023-01-26" />
 
 <title>Cross-validating custom model functions with cvms</title>
 
@@ -377,7 +377,7 @@ font-size:108%;
 <h1 class="title toc-ignore">Cross-validating custom model functions
 with cvms</h1>
 <h4 class="author">Ludvig Renbo Olsen</h4>
-<h4 class="date">2023-01-04</h4>
+<h4 class="date">2023-01-26</h4>
 <div class="abstract">
 <p class="abstract">Abstract</p>
 <p>In this vignette, we use <strong>repeated cross-validation</strong>
@@ -1828,8 +1828,8 @@ standardized as well.</p>
 <span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         dplyr::bind_cols(dplyr::bind_rows(means, sds))</span></span>
 <span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     list(train = train_data, test = test_data, parameters = tidy_parameters)</span></span>
 <span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; }</span></span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bytecode: 0x12a7bbe40&gt;</span></span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;environment: 0x12a7ca3f0&gt;</span></span></code></pre></div>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bytecode: 0x10a192a40&gt;</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;environment: 0x10a17e758&gt;</span></span></code></pre></div>
 <p>Given that the preprocess function also receives the hyperparameters,
 we <em>could</em> write a preprocess function that gets the names of the
 columns to preprocess via the hyperparameters.</p>
