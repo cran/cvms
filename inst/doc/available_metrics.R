@@ -6,6 +6,7 @@ knitr::opts_chunk$set(
   dpi = 92,
   fig.retina = 2
 )
+options(rmarkdown.html_vignette.check_title = FALSE)
 
 ## ----echo=FALSE---------------------------------------------------------------
 tb <- table(c(0,1),c(0,1))

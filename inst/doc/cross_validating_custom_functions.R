@@ -7,6 +7,7 @@ knitr::opts_chunk$set(
   fig.retina = 2,
   eval = requireNamespace("e1071") # Only evaluate chunks when e1071 is installed!
 )
+options(rmarkdown.html_vignette.check_title = FALSE)
 
 ## ----warning=FALSE, message=FALSE---------------------------------------------
 library(cvms)

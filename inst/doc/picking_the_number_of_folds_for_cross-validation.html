@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ludvig Renbo Olsen" />
 
-<meta name="date" content="2023-01-26" />
+<meta name="date" content="2023-06-04" />
 
 <title>Multiple-k: Picking the number of folds for cross-validation</title>
 
@@ -377,7 +377,7 @@ font-size:108%;
 <h1 class="title toc-ignore">Multiple-k: Picking the number of folds for
 cross-validation</h1>
 <h4 class="author">Ludvig Renbo Olsen</h4>
-<h4 class="date">2023-01-26</h4>
+<h4 class="date">2023-06-04</h4>
 <div class="abstract">
 <p class="abstract">Abstract</p>
 <p>When performing cross-validation, we tend to go with the common 10
@@ -538,7 +538,7 @@ we can enable parallelization to speed up the processes:</p>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8          5           3.4          1.5         0.2 setosa </span></span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9          4.4         2.9          1.4         0.2 setosa </span></span>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10          4.9         3.1          1.5         0.1 setosa </span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 140 more rows</span></span></code></pre></div>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 140 more rows</span></span></code></pre></div>
 <p>We count the rows per species, to ensure everything is in order:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">count</span>(Species)</span>
@@ -591,25 +591,25 @@ enable parallelization to speed things up:</p>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 150 × 35</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Sepal.Length Sepal.…¹ Petal…² Petal…³ Species .fold…⁴ .fold…⁵ .fold…⁶ .fold…⁷</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt;   &lt;fct&gt;   &lt;fct&gt;   &lt;fct&gt;   &lt;fct&gt;  </span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1          5.1      3.5     1.4     0.2 setosa  1       2       3       8      </span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2          4.9      3       1.4     0.2 setosa  2       2       1       4      </span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3          4.7      3.2     1.3     0.2 setosa  2       1       2       3      </span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4          4.6      3.1     1.5     0.2 setosa  3       2       2       2      </span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5          5        3.6     1.4     0.2 setosa  1       2       2       1      </span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6          5.4      3.9     1.7     0.4 setosa  3       1       3       5      </span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7          4.6      3.4     1.4     0.3 setosa  3       3       1       5      </span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8          5        3.4     1.5     0.2 setosa  2       1       3       7      </span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9          4.4      2.9     1.4     0.2 setosa  2       1       1       8      </span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10          4.9      3.1     1.5     0.1 setosa  1       3       2       8      </span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 140 more rows, 26 more variables: .folds_5 &lt;fct&gt;, .folds_6 &lt;fct&gt;,</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   .folds_7 &lt;fct&gt;, .folds_8 &lt;fct&gt;, .folds_9 &lt;fct&gt;, .folds_10 &lt;fct&gt;,</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   .folds_11 &lt;fct&gt;, .folds_12 &lt;fct&gt;, .folds_13 &lt;fct&gt;, .folds_14 &lt;fct&gt;,</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   .folds_15 &lt;fct&gt;, .folds_16 &lt;fct&gt;, .folds_17 &lt;fct&gt;, .folds_18 &lt;fct&gt;,</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   .folds_19 &lt;fct&gt;, .folds_20 &lt;fct&gt;, .folds_21 &lt;fct&gt;, .folds_22 &lt;fct&gt;,</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   .folds_23 &lt;fct&gt;, .folds_24 &lt;fct&gt;, .folds_25 &lt;fct&gt;, .folds_26 &lt;fct&gt;,</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   .folds_27 &lt;fct&gt;, .folds_28 &lt;fct&gt;, .folds_29 &lt;fct&gt;, .folds_30 &lt;fct&gt;, and …</span></span></code></pre></div>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Sepal.Length Sepal.Width Petal.Length Petal.Width Species .folds_1 .folds_2</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;   &lt;fct&gt;    &lt;fct&gt;   </span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1          5.1         3.5          1.4         0.2 setosa  1        2       </span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2          4.9         3            1.4         0.2 setosa  2        2       </span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3          4.7         3.2          1.3         0.2 setosa  2        1       </span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4          4.6         3.1          1.5         0.2 setosa  3        2       </span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5          5           3.6          1.4         0.2 setosa  1        2       </span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6          5.4         3.9          1.7         0.4 setosa  3        1       </span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7          4.6         3.4          1.4         0.3 setosa  3        3       </span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8          5           3.4          1.5         0.2 setosa  2        1       </span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9          4.4         2.9          1.4         0.2 setosa  2        1       </span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10          4.9         3.1          1.5         0.1 setosa  1        3       </span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 140 more rows</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 28 more variables: .folds_3 &lt;fct&gt;, .folds_4 &lt;fct&gt;, .folds_5 &lt;fct&gt;,</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   .folds_6 &lt;fct&gt;, .folds_7 &lt;fct&gt;, .folds_8 &lt;fct&gt;, .folds_9 &lt;fct&gt;,</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   .folds_10 &lt;fct&gt;, .folds_11 &lt;fct&gt;, .folds_12 &lt;fct&gt;, .folds_13 &lt;fct&gt;,</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   .folds_14 &lt;fct&gt;, .folds_15 &lt;fct&gt;, .folds_16 &lt;fct&gt;, .folds_17 &lt;fct&gt;,</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   .folds_18 &lt;fct&gt;, .folds_19 &lt;fct&gt;, .folds_20 &lt;fct&gt;, .folds_21 &lt;fct&gt;,</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   .folds_22 &lt;fct&gt;, .folds_23 &lt;fct&gt;, .folds_24 &lt;fct&gt;, .folds_25 &lt;fct&gt;, …</span></span></code></pre></div>
 <p>We see that the <code>.folds_*</code> columns have been added with
 the fold identifiers. We will need the names of the generated fold
 columns in a second so here’s my favorite approach to generating them
@@ -812,19 +812,19 @@ include a progress bar when running in parallel.</p>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>cv</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 × 26</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Fixed        Overa…¹ Balan…²    F1 Sensi…³ Speci…⁴ Pos P…⁵ Neg P…⁶ Kappa   MCC</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 Sepal.Lengt…   0.789   0.842 0.789   0.789   0.894   0.792   0.895 0.684 0.684</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 Petal.Lengt…   0.958   0.968 0.958   0.958   0.979   0.958   0.979 0.937 0.937</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Sepal.Lengt…   0.960   0.970 0.960   0.960   0.980   0.961   0.980 0.941 0.941</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 Sepal.Lengt…   0.974   0.981 0.974   0.974   0.987   0.975   0.987 0.961 0.962</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 16 more variables: `Detection Rate` &lt;dbl&gt;,</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;, Predictions &lt;chr&gt;,</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Confusion Matrix` &lt;list&gt;, Results &lt;list&gt;, `Class Level Results` &lt;list&gt;,</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Coefficients &lt;list&gt;, Folds &lt;int&gt;, `Fold Columns` &lt;int&gt;,</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Convergence Warnings` &lt;int&gt;, `Other Warnings` &lt;int&gt;,</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Warnings and Messages` &lt;list&gt;, Process &lt;list&gt;, HParams &lt;list&lt;tibble[,2]&gt;&gt;,</span></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Dependent &lt;chr&gt;, and abbreviated variable names ¹​`Overall Accuracy`, …</span></span></code></pre></div>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Fixed     `Overall Accuracy` `Balanced Accuracy`    F1 Sensitivity Specificity</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                  &lt;dbl&gt;               &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 Sepal.Le…              0.789               0.842 0.789       0.789       0.894</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 Petal.Le…              0.958               0.968 0.958       0.958       0.979</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Sepal.Le…              0.960               0.970 0.960       0.960       0.980</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 Sepal.Le…              0.974               0.981 0.974       0.974       0.987</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 20 more variables: `Pos Pred Value` &lt;dbl&gt;, `Neg Pred Value` &lt;dbl&gt;,</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Kappa &lt;dbl&gt;, MCC &lt;dbl&gt;, `Detection Rate` &lt;dbl&gt;,</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;, Predictions &lt;chr&gt;,</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Confusion Matrix` &lt;list&gt;, Results &lt;list&gt;, `Class Level Results` &lt;list&gt;,</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Coefficients &lt;list&gt;, Folds &lt;int&gt;, `Fold Columns` &lt;int&gt;,</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Convergence Warnings` &lt;int&gt;, `Other Warnings` &lt;int&gt;,</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Warnings and Messages` &lt;list&gt;, Process &lt;list&gt;, …</span></span></code></pre></div>
 <p>Above, we see the averaged results from all the fold columns. The
 last model formula seems to have performed the best as it has the
 highest <code>Overall Accuracy</code>, <code>Balanced Accuracy</code>,
@@ -872,22 +872,22 @@ something shorter:</p>
 <p>This leaves us with the following data frame:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fold_column_results</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 120 × 14</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Formula Fold Co…¹ Overa…² Balan…³    F1 Sensi…⁴ Speci…⁵ Pos P…⁶ Neg P…⁷ Kappa</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 SL+SW   .folds_1    0.773   0.83  0.774   0.773   0.887   0.776   0.886 0.661</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 SL+SW   .folds_2    0.767   0.825 0.768   0.767   0.883   0.769   0.883 0.651</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 SL+SW   .folds_3    0.76    0.82  0.761   0.76    0.88    0.762   0.879 0.641</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 SL+SW   .folds_4    0.78    0.835 0.780   0.78    0.89    0.783   0.890 0.670</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 SL+SW   .folds_5    0.8     0.85  0.801   0.8     0.9     0.802   0.900 0.701</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 SL+SW   .folds_6    0.787   0.84  0.787   0.787   0.893   0.789   0.893 0.680</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 SL+SW   .folds_7    0.78    0.835 0.781   0.78    0.89    0.783   0.890 0.671</span></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 SL+SW   .folds_8    0.807   0.855 0.806   0.807   0.903   0.813   0.905 0.710</span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 SL+SW   .folds_9    0.787   0.84  0.788   0.787   0.893   0.790   0.893 0.681</span></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 SL+SW   .folds_10   0.787   0.84  0.787   0.787   0.893   0.791   0.893 0.681</span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 110 more rows, 4 more variables: MCC &lt;dbl&gt;, `Detection Rate` &lt;dbl&gt;,</span></span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;, and abbreviated variable</span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   names ¹​`Fold Column`, ²​`Overall Accuracy`, ³​`Balanced Accuracy`,</span></span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ⁴​Sensitivity, ⁵​Specificity, ⁶​`Pos Pred Value`, ⁷​`Neg Pred Value`</span></span></code></pre></div>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Formula `Fold Column` `Overall Accuracy` `Balanced Accuracy`    F1</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;                      &lt;dbl&gt;               &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 SL+SW   .folds_1                   0.773               0.83  0.774</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 SL+SW   .folds_2                   0.767               0.825 0.768</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 SL+SW   .folds_3                   0.76                0.82  0.761</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 SL+SW   .folds_4                   0.78                0.835 0.780</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 SL+SW   .folds_5                   0.8                 0.85  0.801</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 SL+SW   .folds_6                   0.787               0.84  0.787</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 SL+SW   .folds_7                   0.78                0.835 0.781</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 SL+SW   .folds_8                   0.807               0.855 0.806</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 SL+SW   .folds_9                   0.787               0.84  0.788</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 SL+SW   .folds_10                  0.787               0.84  0.787</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 110 more rows</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 9 more variables: Sensitivity &lt;dbl&gt;, Specificity &lt;dbl&gt;,</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Pos Pred Value` &lt;dbl&gt;, `Neg Pred Value` &lt;dbl&gt;, Kappa &lt;dbl&gt;, MCC &lt;dbl&gt;,</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Detection Rate` &lt;dbl&gt;, `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;</span></span></code></pre></div>
 <p>Currently, we lack the number of folds for each of the fold columns.
 We have stored those in the fold column statistics we looked at in the
 beginning (<code>fold_stats</code>), so let’s add them with
@@ -911,7 +911,7 @@ beginning (<code>fold_stats</code>), so let’s add them with
 <span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 .folds_8               13</span></span>
 <span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 .folds_9               13</span></span>
 <span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 .folds_10              19</span></span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 20 more rows</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 20 more rows</span></span>
 <span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the counts with a join</span></span>
 <span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>fold_column_results <span class="ot">&lt;-</span> fold_counts_df <span class="sc">%&gt;%</span> </span>
@@ -919,23 +919,22 @@ beginning (<code>fold_stats</code>), so let’s add them with
 <span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>fold_column_results</span>
 <span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 120 × 15</span></span>
-<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Fold …¹ Num F…² Formula Overa…³ Balan…⁴    F1 Sensi…⁵ Speci…⁶ Pos P…⁷ Neg P…⁸</span></span>
-<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 .folds…       3 SL+SW     0.773   0.83  0.774   0.773   0.887   0.776   0.886</span></span>
-<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 .folds…       3 PL+PW     0.967   0.975 0.967   0.967   0.983   0.967   0.983</span></span>
-<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 .folds…       3 SL+SW+…   0.967   0.975 0.967   0.967   0.983   0.968   0.984</span></span>
-<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 .folds…       3 SL*SW+…   0.973   0.98  0.973   0.973   0.987   0.974   0.987</span></span>
-<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 .folds…       3 SL+SW     0.767   0.825 0.768   0.767   0.883   0.769   0.883</span></span>
-<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 .folds…       3 PL+PW     0.953   0.965 0.953   0.953   0.977   0.953   0.977</span></span>
-<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 .folds…       3 SL+SW+…   0.96    0.97  0.960   0.96    0.98    0.960   0.980</span></span>
-<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 .folds…       3 SL*SW+…   0.967   0.975 0.967   0.967   0.983   0.967   0.983</span></span>
-<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 .folds…       3 SL+SW     0.76    0.82  0.761   0.76    0.88    0.762   0.879</span></span>
-<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 .folds…       3 PL+PW     0.96    0.97  0.96    0.96    0.98    0.96    0.98 </span></span>
-<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 110 more rows, 5 more variables: Kappa &lt;dbl&gt;, MCC &lt;dbl&gt;,</span></span>
-<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Detection Rate` &lt;dbl&gt;, `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;, and</span></span>
-<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   abbreviated variable names ¹​`Fold Column`, ²​`Num Folds`,</span></span>
-<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ³​`Overall Accuracy`, ⁴​`Balanced Accuracy`, ⁵​Sensitivity, ⁶​Specificity,</span></span>
-<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ⁷​`Pos Pred Value`, ⁸​`Neg Pred Value`</span></span></code></pre></div>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    `Fold Column` `Num Folds` Formula     `Overall Accuracy` `Balanced Accuracy`</span></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;               &lt;dbl&gt; &lt;chr&gt;                    &lt;dbl&gt;               &lt;dbl&gt;</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 .folds_1                3 SL+SW                    0.773               0.83 </span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 .folds_1                3 PL+PW                    0.967               0.975</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 .folds_1                3 SL+SW+PL+PW              0.967               0.975</span></span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 .folds_1                3 SL*SW+PL*PW              0.973               0.98 </span></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 .folds_2                3 SL+SW                    0.767               0.825</span></span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 .folds_2                3 PL+PW                    0.953               0.965</span></span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 .folds_2                3 SL+SW+PL+PW              0.96                0.97 </span></span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 .folds_2                3 SL*SW+PL*PW              0.967               0.975</span></span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 .folds_3                3 SL+SW                    0.76                0.82 </span></span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 .folds_3                3 PL+PW                    0.96                0.97 </span></span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 110 more rows</span></span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 10 more variables: F1 &lt;dbl&gt;, Sensitivity &lt;dbl&gt;, Specificity &lt;dbl&gt;,</span></span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Pos Pred Value` &lt;dbl&gt;, `Neg Pred Value` &lt;dbl&gt;, Kappa &lt;dbl&gt;, MCC &lt;dbl&gt;,</span></span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Detection Rate` &lt;dbl&gt;, `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;</span></span></code></pre></div>
 <p>We further add a column that indicates which repetition of the
 <code>k</code> setting a fold column is. This is done with the
 <code>l_starts</code> method in <code>groupdata2::group()</code>, which
@@ -1118,7 +1117,7 @@ folds setting:</p>
 <span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8           8 SL+SW+PL+PW               0.967</span></span>
 <span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9          13 PL+PW                     0.967</span></span>
 <span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10          13 SL*SW+PL*PW               0.98 </span></span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 30 more rows</span></span></code></pre></div>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 30 more rows</span></span></code></pre></div>
 <p>With the data ready, we plot the effect of <code>k</code> on the
 <code>Balanced Accuracy</code> metric. Feel free to plot one of the
 other metrics as well!</p>
@@ -1175,22 +1174,22 @@ which we concatenate to a single data frame.</p>
 <span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>class_level_fold_results</span>
 <span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 90 × 13</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Fold Colu…¹ Num F…² Class Balan…³    F1 Sensi…⁴ Speci…⁵ Pos P…⁶ Neg P…⁷ Kappa</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 .folds_1          3 seto…   1     1        1       1      1       1     1    </span></span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 .folds_1          3 vers…   0.965 0.959    0.94    0.99   0.979   0.971 0.939</span></span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 .folds_1          3 virg…   0.975 0.961    0.98    0.97   0.942   0.990 0.941</span></span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 .folds_2          3 seto…   1     1        1       1      1       1     1    </span></span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 .folds_2          3 vers…   0.96  0.949    0.94    0.98   0.959   0.970 0.925</span></span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 .folds_2          3 virg…   0.965 0.950    0.96    0.97   0.941   0.980 0.925</span></span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 .folds_3          3 seto…   1     1        1       1      1       1     1    </span></span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 .folds_3          3 vers…   0.96  0.958    0.92    1      1       0.962 0.939</span></span>
-<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 .folds_3          3 virg…   0.98  0.962    1       0.96   0.926   1     0.941</span></span>
-<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 .folds_4          8 seto…   0.99  0.990    0.98    1      1       0.990 0.985</span></span>
-<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 80 more rows, 3 more variables: `Detection Rate` &lt;dbl&gt;,</span></span>
-<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;, and abbreviated variable</span></span>
-<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   names ¹​`Fold Column`, ²​`Num Folds`, ³​`Balanced Accuracy`, ⁴​Sensitivity,</span></span>
-<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ⁵​Specificity, ⁶​`Pos Pred Value`, ⁷​`Neg Pred Value`</span></span></code></pre></div>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    `Fold Column` `Num Folds` Class      `Balanced Accuracy`    F1 Sensitivity</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;               &lt;dbl&gt; &lt;chr&gt;                    &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 .folds_1                3 setosa                   1     1            1   </span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 .folds_1                3 versicolor               0.965 0.959        0.94</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 .folds_1                3 virginica                0.975 0.961        0.98</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 .folds_2                3 setosa                   1     1            1   </span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 .folds_2                3 versicolor               0.96  0.949        0.94</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 .folds_2                3 virginica                0.965 0.950        0.96</span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 .folds_3                3 setosa                   1     1            1   </span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 .folds_3                3 versicolor               0.96  0.958        0.92</span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 .folds_3                3 virginica                0.98  0.962        1   </span></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 .folds_4                8 setosa                   0.99  0.990        0.98</span></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 80 more rows</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 7 more variables: Specificity &lt;dbl&gt;, `Pos Pred Value` &lt;dbl&gt;,</span></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Neg Pred Value` &lt;dbl&gt;, Kappa &lt;dbl&gt;, `Detection Rate` &lt;dbl&gt;,</span></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;</span></span></code></pre></div>
 <p>Again, we add the repetition column, using the <code>l_starts</code>
 method in <code>groupdata2::group()</code>:</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a column for indicating the repetition of the `k` setting</span></span>
@@ -1220,7 +1219,7 @@ method in <code>groupdata2::group()</code>:</p>
 <span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 .folds_3                3 versicolor 3         </span></span>
 <span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 .folds_3                3 virginica  3         </span></span>
 <span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 .folds_4                8 setosa     1         </span></span>
-<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 80 more rows</span></span></code></pre></div>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 80 more rows</span></span></code></pre></div>
 <p>To plot the average lines for each formula, we calculate the average
 <code>Balanced Accuracy</code> for each class, for each number of folds
 setting:</p>
@@ -1243,7 +1242,7 @@ setting:</p>
 <span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8          13 versicolor               0.97 </span></span>
 <span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9          13 virginica                0.973</span></span>
 <span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10          19 setosa                   0.993</span></span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 20 more rows</span></span></code></pre></div>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 20 more rows</span></span></code></pre></div>
 <p>Now, we can plot the <code>Balanced Accuracy</code> by the number of
 folds:</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the balanced accuracy by the number of folds</span></span>

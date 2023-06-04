@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ludvig Renbo Olsen" />
 
-<meta name="date" content="2023-01-26" />
+<meta name="date" content="2023-06-04" />
 
 <title>Cross-validating custom model functions with cvms</title>
 
@@ -377,7 +377,7 @@ font-size:108%;
 <h1 class="title toc-ignore">Cross-validating custom model functions
 with cvms</h1>
 <h4 class="author">Ludvig Renbo Olsen</h4>
-<h4 class="date">2023-01-26</h4>
+<h4 class="date">2023-06-04</h4>
 <div class="abstract">
 <p class="abstract">Abstract</p>
 <p>In this vignette, we use <strong>repeated cross-validation</strong>
@@ -957,15 +957,14 @@ the dataset with the fold columns and the names of the fold columns
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>cv_1</span>
 <span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 17</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Fixed    RMSE   MAE NRMSE…¹  RRSE   RAE RMSLE Predic…² Results  Coeffi…³ Folds</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;list&gt;   &lt;list&gt;   &lt;list&gt;   &lt;int&gt;</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 diagno…  10.5  8.25   0.543 0.571 0.561 0.298 &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;    15</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 diagno…  17.9 15.0    0.905 0.973 1.01  0.506 &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;    15</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 diagno…  16.7 14.3    0.828 0.902 0.947 0.486 &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;    15</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 6 more variables: `Fold Columns` &lt;int&gt;, `Convergence Warnings` &lt;int&gt;,</span></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Other Warnings` &lt;int&gt;, `Warnings and Messages` &lt;list&gt;, Process &lt;list&gt;,</span></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Dependent &lt;chr&gt;, and abbreviated variable names ¹​`NRMSE(IQR)`,</span></span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ²​Predictions, ³​Coefficients</span></span></code></pre></div>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Fixed           RMSE   MAE `NRMSE(IQR)`  RRSE   RAE RMSLE Predictions Results </span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;list&gt;      &lt;list&gt;  </span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 diagnosis+age…  10.5  8.25        0.543 0.571 0.561 0.298 &lt;tibble&gt;    &lt;tibble&gt;</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 diagnosis+age   17.9 15.0         0.905 0.973 1.01  0.506 &lt;tibble&gt;    &lt;tibble&gt;</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 diagnosis       16.7 14.3         0.828 0.902 0.947 0.486 &lt;tibble&gt;    &lt;tibble&gt;</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 8 more variables: Coefficients &lt;list&gt;, Folds &lt;int&gt;, `Fold Columns` &lt;int&gt;,</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Convergence Warnings` &lt;int&gt;, `Other Warnings` &lt;int&gt;,</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Warnings and Messages` &lt;list&gt;, Process &lt;list&gt;, Dependent &lt;chr&gt;</span></span></code></pre></div>
 <p>The first formula has the lowest Root Mean Square Error
 (<code>RMSE</code>). Before learning how to inspect the output, let’s
 enable hyperparameters, so we can try different kernels and costs.</p>
@@ -1135,20 +1134,20 @@ combination of the values to cross-validate. E.g.:</p>
 <span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>cv_2</span>
 <span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 8 × 18</span></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Fixed    RMSE   MAE NRMSE…¹  RRSE   RAE RMSLE Predic…² Results  Coeffi…³ Folds</span></span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;list&gt;   &lt;list&gt;   &lt;list&gt;   &lt;int&gt;</span></span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 diagno…  10.2  8.03   0.522 0.556 0.544 0.286 &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;    15</span></span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 diagno…  14.5 11.9    0.738 0.789 0.803 0.407 &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;    15</span></span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 diagno…  10.5  8.26   0.543 0.571 0.562 0.298 &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;    15</span></span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 diagno…  14.9 12.5    0.761 0.813 0.841 0.422 &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;    15</span></span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 diagno…  18.6 15.2    0.930 1.00  1.01  0.514 &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;    15</span></span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 diagno…  17.6 14.8    0.880 0.948 0.982 0.494 &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;    15</span></span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7 diagno…  17.3 14.7    0.866 0.935 0.978 0.492 &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;    15</span></span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8 diagno…  17.1 14.6    0.850 0.921 0.969 0.489 &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;    15</span></span>
-<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 7 more variables: `Fold Columns` &lt;int&gt;, `Convergence Warnings` &lt;int&gt;,</span></span>
-<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Other Warnings` &lt;int&gt;, `Warnings and Messages` &lt;list&gt;, Process &lt;list&gt;,</span></span>
-<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   HParams &lt;list&lt;tibble[,2]&gt;&gt;, Dependent &lt;chr&gt;, and abbreviated variable names</span></span>
-<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ¹​`NRMSE(IQR)`, ²​Predictions, ³​Coefficients</span></span></code></pre></div>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Fixed           RMSE   MAE `NRMSE(IQR)`  RRSE   RAE RMSLE Predictions Results </span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;list&gt;      &lt;list&gt;  </span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 diagnosis+age…  10.2  8.03        0.522 0.556 0.544 0.286 &lt;tibble&gt;    &lt;tibble&gt;</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 diagnosis+age…  14.5 11.9         0.738 0.789 0.803 0.407 &lt;tibble&gt;    &lt;tibble&gt;</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 diagnosis+age…  10.5  8.26        0.543 0.571 0.562 0.298 &lt;tibble&gt;    &lt;tibble&gt;</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 diagnosis+age…  14.9 12.5         0.761 0.813 0.841 0.422 &lt;tibble&gt;    &lt;tibble&gt;</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 diagnosis       18.6 15.2         0.930 1.00  1.01  0.514 &lt;tibble&gt;    &lt;tibble&gt;</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 diagnosis       17.6 14.8         0.880 0.948 0.982 0.494 &lt;tibble&gt;    &lt;tibble&gt;</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7 diagnosis       17.3 14.7         0.866 0.935 0.978 0.492 &lt;tibble&gt;    &lt;tibble&gt;</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8 diagnosis       17.1 14.6         0.850 0.921 0.969 0.489 &lt;tibble&gt;    &lt;tibble&gt;</span></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 9 more variables: Coefficients &lt;list&gt;, Folds &lt;int&gt;, `Fold Columns` &lt;int&gt;,</span></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Convergence Warnings` &lt;int&gt;, `Other Warnings` &lt;int&gt;,</span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Warnings and Messages` &lt;list&gt;, Process &lt;list&gt;, HParams &lt;list&lt;tibble[,2]&gt;&gt;,</span></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Dependent &lt;chr&gt;</span></span></code></pre></div>
 <p>The output has a lot of information and can be a bit hard to read.
 The first thing, we wish to know, is which model performed the best. We
 will use the <code>RMSE</code> metric to determine this. Lower is
@@ -1715,15 +1714,14 @@ hyperparameters from the previous cross-validation, to save time:</p>
 <span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>cv_3</span>
 <span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 19</span></span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Fixed          RMSE   MAE NRMSE…¹  RRSE   RAE RMSLE Predic…² Results  Coeffi…³</span></span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;list&gt;   &lt;list&gt;   &lt;list&gt;  </span></span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 diagnosis+ag…  10.2  8.03   0.522 0.556 0.544 0.286 &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;</span></span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 diagnosis      18.6 15.2    0.930 1.00  1.01  0.514 &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;</span></span>
-<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 9 more variables: Preprocess &lt;list&gt;, Folds &lt;int&gt;,</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Fixed           RMSE   MAE `NRMSE(IQR)`  RRSE   RAE RMSLE Predictions Results </span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;list&gt;      &lt;list&gt;  </span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 diagnosis+age…  10.2  8.03        0.522 0.556 0.544 0.286 &lt;tibble&gt;    &lt;tibble&gt;</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 diagnosis       18.6 15.2         0.930 1.00  1.01  0.514 &lt;tibble&gt;    &lt;tibble&gt;</span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 10 more variables: Coefficients &lt;list&gt;, Preprocess &lt;list&gt;, Folds &lt;int&gt;,</span></span>
 <span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Fold Columns` &lt;int&gt;, `Convergence Warnings` &lt;int&gt;, `Other Warnings` &lt;int&gt;,</span></span>
 <span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Warnings and Messages` &lt;list&gt;, Process &lt;list&gt;, HParams &lt;list&lt;tibble[,2]&gt;&gt;,</span></span>
-<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Dependent &lt;chr&gt;, and abbreviated variable names ¹​`NRMSE(IQR)`,</span></span>
-<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ²​Predictions, ³​Coefficients</span></span></code></pre></div>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Dependent &lt;chr&gt;</span></span></code></pre></div>
 <p>This didn’t change the results but may do so in other contexts and
 for other model types.</p>
 <p>We can check the preprocessing parameters for the different
@@ -1828,8 +1826,8 @@ standardized as well.</p>
 <span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         dplyr::bind_cols(dplyr::bind_rows(means, sds))</span></span>
 <span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     list(train = train_data, test = test_data, parameters = tidy_parameters)</span></span>
 <span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; }</span></span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bytecode: 0x10a192a40&gt;</span></span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;environment: 0x10a17e758&gt;</span></span></code></pre></div>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bytecode: 0x128342be8&gt;</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;environment: 0x128307b70&gt;</span></span></code></pre></div>
 <p>Given that the preprocess function also receives the hyperparameters,
 we <em>could</em> write a preprocess function that gets the names of the
 columns to preprocess via the hyperparameters.</p>
@@ -1952,27 +1950,27 @@ probabilities of the second class.</p>
 <span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>cv_4</span>
 <span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 12 × 28</span></span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Fixed Balance…¹      F1 Sensi…² Speci…³ Pos P…⁴ Neg P…⁵   AUC Lower…⁶ Upper…⁷</span></span>
-<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 score     0.394   0.364   0.322   0.467   0.453   0.306 0.350   0.144   0.555</span></span>
-<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 score     0.397   0.293   0.244   0.55    0.41    0.327 0.389   0.164   0.615</span></span>
-<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 score     0.403   0.367   0.322   0.483   0.460   0.316 0.352   0.143   0.561</span></span>
-<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 score     0.456   0.407   0.378   0.533   0.491   0.386 0.438   0.214   0.663</span></span>
-<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 score     0.403   0.369   0.322   0.483   0.453   0.324 0.405   0.190   0.620</span></span>
-<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 score     0.456   0.368   0.311   0.6     0.516   0.365 0.426   0.205   0.648</span></span>
-<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 age       0.617   0.701   0.733   0.5     0.693   0.633 0.625   0.406   0.844</span></span>
-<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 age       0.5   NaN       0.3     0.7   NaN       0.403 0.592   0.374   0.810</span></span>
-<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 age       0.533 NaN       0.367   0.7   NaN       0.451 0.467   0.257   0.676</span></span>
-<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 age       0.542 NaN       0.333   0.75    0.617   0.441 0.6     0.371   0.829</span></span>
-<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 age       0.55    0.536   0.5     0.6     0.653   0.537 0.525   0.301   0.749</span></span>
-<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 age       0.608   0.545   0.467   0.75    0.777   0.495 0.633   0.416   0.851</span></span>
-<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 18 more variables: Kappa &lt;dbl&gt;, MCC &lt;dbl&gt;, `Detection Rate` &lt;dbl&gt;,</span></span>
-<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;, Predictions &lt;list&gt;,</span></span>
-<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ROC &lt;list&gt;, `Confusion Matrix` &lt;list&gt;, Results &lt;list&gt;, Coefficients &lt;list&gt;,</span></span>
-<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Folds &lt;int&gt;, `Fold Columns` &lt;int&gt;, `Convergence Warnings` &lt;int&gt;,</span></span>
-<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Other Warnings` &lt;int&gt;, `Warnings and Messages` &lt;list&gt;, Process &lt;list&gt;,</span></span>
-<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   HParams &lt;list&lt;tibble[,2]&gt;&gt;, Dependent &lt;chr&gt;, and abbreviated variable names</span></span>
-<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ¹​`Balanced Accuracy`, ²​Sensitivity, ³​Specificity, ⁴​`Pos Pred Value`, …</span></span></code></pre></div>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Fixed `Balanced Accuracy`      F1 Sensitivity Specificity `Pos Pred Value`</span></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;               &lt;dbl&gt;   &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;            &lt;dbl&gt;</span></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 score               0.394   0.364       0.322       0.467            0.453</span></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 score               0.397   0.293       0.244       0.55             0.41 </span></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 score               0.403   0.367       0.322       0.483            0.460</span></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 score               0.456   0.407       0.378       0.533            0.491</span></span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 score               0.403   0.369       0.322       0.483            0.453</span></span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 score               0.456   0.368       0.311       0.6              0.516</span></span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 age                 0.617   0.701       0.733       0.5              0.693</span></span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 age                 0.5   NaN           0.3         0.7            NaN    </span></span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 age                 0.533 NaN           0.367       0.7            NaN    </span></span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 age                 0.542 NaN           0.333       0.75             0.617</span></span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 age                 0.55    0.536       0.5         0.6              0.653</span></span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 age                 0.608   0.545       0.467       0.75             0.777</span></span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 22 more variables: `Neg Pred Value` &lt;dbl&gt;, AUC &lt;dbl&gt;, `Lower CI` &lt;dbl&gt;,</span></span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Upper CI` &lt;dbl&gt;, Kappa &lt;dbl&gt;, MCC &lt;dbl&gt;, `Detection Rate` &lt;dbl&gt;,</span></span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;, Predictions &lt;list&gt;,</span></span>
+<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ROC &lt;list&gt;, `Confusion Matrix` &lt;list&gt;, Results &lt;list&gt;, Coefficients &lt;list&gt;,</span></span>
+<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Folds &lt;int&gt;, `Fold Columns` &lt;int&gt;, `Convergence Warnings` &lt;int&gt;,</span></span>
+<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Other Warnings` &lt;int&gt;, `Warnings and Messages` &lt;list&gt;, Process &lt;list&gt;,</span></span>
+<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   HParams &lt;list&lt;tibble[,2]&gt;&gt;, Dependent &lt;chr&gt;</span></span></code></pre></div>
 <p>Let’s order the models by the <code>Balanced Accuracy</code> metric
 (in descending order) and extract the formulas and hyperparameters:</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>cv_4 <span class="sc">%&gt;%</span> </span>
@@ -2405,27 +2403,27 @@ parallel!</p>
 <span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>cv_5</span>
 <span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 12 × 26</span></span>
-<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Fixed        Overa…¹ Balan…²      F1 Sensi…³ Speci…⁴ Pos P…⁵ Neg P…⁶    Kappa</span></span>
-<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;          &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 Age+Height     0.28    0.52    0.271   0.28    0.76    0.271   0.761  0.0364 </span></span>
-<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 Age+Height     0.257   0.504   0.251   0.257   0.752   0.254   0.753  0.00746</span></span>
-<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 Age+Height     0.293   0.529   0.280   0.293   0.764   0.283   0.766  0.0528 </span></span>
-<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 Age+Height     0.23    0.487   0.225   0.23    0.743   0.231   0.742 -0.0249 </span></span>
-<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 Age+Height     0.303   0.536   0.294   0.303   0.768   0.298   0.769  0.0682 </span></span>
-<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 Age+Height     0.24    0.493   0.238   0.24    0.747   0.243   0.746 -0.0109 </span></span>
-<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 Age+Height+…   0.403   0.602   0.393   0.403   0.801   0.412   0.804  0.200  </span></span>
-<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 Age+Height+…   0.367   0.578 NaN       0.367   0.789   0.341   0.793  0.144  </span></span>
-<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 Age+Height+…   0.4     0.6     0.389   0.4     0.8     0.393   0.803  0.193  </span></span>
-<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 Age+Height+…   0.38    0.587   0.364   0.38    0.793   0.371   0.796  0.166  </span></span>
-<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 Age+Height+…   0.423   0.616   0.410   0.423   0.808   0.433   0.811  0.225  </span></span>
-<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 Age+Height+…   0.363   0.576   0.348   0.363   0.788   0.345   0.790  0.143  </span></span>
-<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 17 more variables: MCC &lt;dbl&gt;, `Detection Rate` &lt;dbl&gt;,</span></span>
-<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;, Predictions &lt;list&gt;,</span></span>
-<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Confusion Matrix` &lt;list&gt;, Results &lt;list&gt;, `Class Level Results` &lt;list&gt;,</span></span>
-<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Coefficients &lt;list&gt;, Folds &lt;int&gt;, `Fold Columns` &lt;int&gt;,</span></span>
-<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Convergence Warnings` &lt;int&gt;, `Other Warnings` &lt;int&gt;,</span></span>
-<span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Warnings and Messages` &lt;list&gt;, Process &lt;list&gt;, HParams &lt;list&lt;tibble[,2]&gt;&gt;,</span></span>
-<span id="cb33-38"><a href="#cb33-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Dependent &lt;chr&gt;, and abbreviated variable names ¹​`Overall Accuracy`, …</span></span></code></pre></div>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Fixed  `Overall Accuracy` `Balanced Accuracy`      F1 Sensitivity Specificity</span></span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;               &lt;dbl&gt;               &lt;dbl&gt;   &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 Age+H…              0.28                0.52    0.271       0.28        0.76 </span></span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 Age+H…              0.257               0.504   0.251       0.257       0.752</span></span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 Age+H…              0.293               0.529   0.280       0.293       0.764</span></span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 Age+H…              0.23                0.487   0.225       0.23        0.743</span></span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 Age+H…              0.303               0.536   0.294       0.303       0.768</span></span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 Age+H…              0.24                0.493   0.238       0.24        0.747</span></span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 Age+H…              0.403               0.602   0.393       0.403       0.801</span></span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 Age+H…              0.367               0.578 NaN           0.367       0.789</span></span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 Age+H…              0.4                 0.6     0.389       0.4         0.8  </span></span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 Age+H…              0.38                0.587   0.364       0.38        0.793</span></span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 Age+H…              0.423               0.616   0.410       0.423       0.808</span></span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 Age+H…              0.363               0.576   0.348       0.363       0.788</span></span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 20 more variables: `Pos Pred Value` &lt;dbl&gt;, `Neg Pred Value` &lt;dbl&gt;,</span></span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Kappa &lt;dbl&gt;, MCC &lt;dbl&gt;, `Detection Rate` &lt;dbl&gt;,</span></span>
+<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;, Predictions &lt;list&gt;,</span></span>
+<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Confusion Matrix` &lt;list&gt;, Results &lt;list&gt;, `Class Level Results` &lt;list&gt;,</span></span>
+<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Coefficients &lt;list&gt;, Folds &lt;int&gt;, `Fold Columns` &lt;int&gt;,</span></span>
+<span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Convergence Warnings` &lt;int&gt;, `Other Warnings` &lt;int&gt;,</span></span>
+<span id="cb33-38"><a href="#cb33-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Warnings and Messages` &lt;list&gt;, Process &lt;list&gt;, …</span></span></code></pre></div>
 <p>Let’s order the results by the <code>Balanced Accuracy</code> metric
 and extract the formulas and hyperparameters:</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>cv_5 <span class="sc">%&gt;%</span> </span>
@@ -2573,32 +2571,29 @@ metrics). These evaluations are stored in the output as
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract Class Level Results for the best model</span></span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>cv_5<span class="sc">$</span><span class="st">`</span><span class="at">Class Level Results</span><span class="st">`</span>[[<span class="dv">11</span>]]</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 × 14</span></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Class Balanced …¹    F1 Sensi…² Speci…³ Pos P…⁴ Neg P…⁵  Kappa Detec…⁶ Detec…⁷</span></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 A           0.664 0.493   0.493   0.836   0.525   0.833 0.330   0.123    0.247</span></span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 B           0.62  0.413   0.4     0.84    0.471   0.810 0.245   0.1      0.22 </span></span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 C           0.662 0.494   0.587   0.738   0.428   0.843 0.289   0.147    0.343</span></span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 D           0.516 0.240   0.213   0.818   0.306   0.757 0.0360  0.0533   0.19 </span></span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 4 more variables: Prevalence &lt;dbl&gt;, Support &lt;int&gt;,</span></span>
-<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Results &lt;named list&gt;, `Confusion Matrix` &lt;named list&gt;, and abbreviated</span></span>
-<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   variable names ¹​`Balanced Accuracy`, ²​Sensitivity, ³​Specificity,</span></span>
-<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ⁴​`Pos Pred Value`, ⁵​`Neg Pred Value`, ⁶​`Detection Rate`,</span></span>
-<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ⁷​`Detection Prevalence`</span></span></code></pre></div>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Class `Balanced Accuracy`    F1 Sensitivity Specificity `Pos Pred Value`</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;               &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;            &lt;dbl&gt;</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 A                   0.664 0.493       0.493       0.836            0.525</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 B                   0.62  0.413       0.4         0.84             0.471</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 C                   0.662 0.494       0.587       0.738            0.428</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 D                   0.516 0.240       0.213       0.818            0.306</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 8 more variables: `Neg Pred Value` &lt;dbl&gt;, Kappa &lt;dbl&gt;,</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Detection Rate` &lt;dbl&gt;, `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;,</span></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Support &lt;int&gt;, Results &lt;named list&gt;, `Confusion Matrix` &lt;named list&gt;</span></span></code></pre></div>
 <p>We also have the fold results:</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract fold results for the best model</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>cv_5<span class="sc">$</span>Results[[<span class="dv">11</span>]]</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 13</span></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Fold Colum…¹ Overa…² Balan…³    F1 Sensi…⁴ Speci…⁵ Pos P…⁶ Neg P…⁷ Kappa   MCC</span></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 .folds_1       0.4     0.6   0.378   0.4     0.8     0.367   0.804 0.185 0.203</span></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 .folds_2       0.383   0.589 0.377   0.383   0.794   0.374   0.796 0.173 0.178</span></span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 .folds_3       0.467   0.644 0.448   0.467   0.822   0.488   0.826 0.281 0.297</span></span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 .folds_4       0.383   0.589 0.378   0.383   0.794   0.418   0.796 0.180 0.183</span></span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 .folds_5       0.483   0.656 0.470   0.483   0.828   0.516   0.832 0.307 0.321</span></span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 3 more variables: `Detection Rate` &lt;dbl&gt;,</span></span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;, and abbreviated variable</span></span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   names ¹​`Fold Column`, ²​`Overall Accuracy`, ³​`Balanced Accuracy`,</span></span>
-<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ⁴​Sensitivity, ⁵​Specificity, ⁶​`Pos Pred Value`, ⁷​`Neg Pred Value`</span></span></code></pre></div>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   `Fold Column` `Overall Accuracy` `Balanced Accuracy`    F1 Sensitivity</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                      &lt;dbl&gt;               &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 .folds_1                   0.4                 0.6   0.378       0.4  </span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 .folds_2                   0.383               0.589 0.377       0.383</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 .folds_3                   0.467               0.644 0.448       0.467</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 .folds_4                   0.383               0.589 0.378       0.383</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 .folds_5                   0.483               0.656 0.470       0.483</span></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 8 more variables: Specificity &lt;dbl&gt;, `Pos Pred Value` &lt;dbl&gt;,</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Neg Pred Value` &lt;dbl&gt;, Kappa &lt;dbl&gt;, MCC &lt;dbl&gt;, `Detection Rate` &lt;dbl&gt;,</span></span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   `Detection Prevalence` &lt;dbl&gt;, Prevalence &lt;dbl&gt;</span></span></code></pre></div>
 <p>And a set of multiclass confusion matrices (one per fold column):</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract multiclass confusion matrices for the best model</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co"># One per fold column</span></span>
@@ -2616,7 +2611,7 @@ metrics). These evaluations are stored in the output as
 <span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 .folds_1      D          B          2</span></span>
 <span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 .folds_1      A          C          2</span></span>
 <span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 .folds_1      B          C          0</span></span>
-<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 70 more rows</span></span></code></pre></div>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 70 more rows</span></span></code></pre></div>
 <p>We can add these together (or average them) and plot the result:</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sum the fold column confusion matrices</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co"># to one overall confusion matrix</span></span>
