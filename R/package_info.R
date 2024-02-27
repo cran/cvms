@@ -15,9 +15,7 @@
 #' and \code{\link[cvms:evaluate]{evaluate()}}.
 #'
 #' @author Ludvig Renbo Olsen, \email{r-pkgs@@ludvigolsen.dk}
-#' @docType package
-#' @name cvms
-NULL
+"_PACKAGE"
 
 
 # R CMD check NOTE handling

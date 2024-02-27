@@ -54,7 +54,7 @@ multinomial_metrics(
 
 \item{overall_accuracy}{\code{Overall Accuracy} (Default: TRUE)}
 
-\item{balanced_accuracy}{\code{Balanced Accuracy} (Default: TRUE)}
+\item{balanced_accuracy}{\code{Macro Balanced Accuracy} (Default: TRUE)}
 
 \item{w_balanced_accuracy}{\code{Weighted Balanced Accuracy} (Default: FALSE)}
 
@@ -157,8 +157,8 @@ multinomial_metrics(balanced_accuracy = FALSE)
 Other evaluation functions: 
 \code{\link{binomial_metrics}()},
 \code{\link{confusion_matrix}()},
-\code{\link{evaluate_residuals}()},
 \code{\link{evaluate}()},
+\code{\link{evaluate_residuals}()},
 \code{\link{gaussian_metrics}()}
 }
 \author{

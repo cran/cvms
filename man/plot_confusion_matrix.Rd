@@ -287,6 +287,15 @@ plot_confusion_matrix(evaluation)
 # Add sum tiles
 plot_confusion_matrix(evaluation, add_sums = TRUE)
 
+# Add labels to diagonal row and column percentages
+# This example assumes "B" is the positive class
+# but you could write anything as prefix to the percentages
+plot_confusion_matrix(
+    evaluation,
+    font_row_percentages = font(prefix=c("NPV = ", "", "", "PPV = ")),
+    font_col_percentages = font(prefix=c("Spec = ", "", "", "Sens = "))
+)
+
 # Three (or more) classes
 
 # Create targets and predictions data frame
@@ -371,8 +380,8 @@ plot_confusion_matrix(cm, sub_col="Trials")
 Other plotting functions: 
 \code{\link{font}()},
 \code{\link{plot_metric_density}()},
-\code{\link{plot_probabilities_ecdf}()},
 \code{\link{plot_probabilities}()},
+\code{\link{plot_probabilities_ecdf}()},
 \code{\link{sum_tile_settings}()}
 }
 \author{
