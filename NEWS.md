@@ -1,4 +1,8 @@
 
+# cvms 1.6.2
+
+* Fixes tests after changes to `ggnewscale`. Thanks [@eliocamp](https://github.com/LudvigOlsen/cvms/pull/39) for the PR.
+
 # cvms 1.6.1
 
 * Removes defunct tests after `ggplot2` update.
