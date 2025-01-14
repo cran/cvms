@@ -126,11 +126,11 @@ library(ggplot2)
 xpectr::set_test_seed(1)
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  # Enable parallelization
-#  # NOTE: Uncomment to run
-#  # library(doParallel)
-#  # doParallel::registerDoParallel(6)
-#  
+# # Enable parallelization
+# # NOTE: Uncomment to run
+# # library(doParallel)
+# # doParallel::registerDoParallel(6)
+# 
 
 ## -----------------------------------------------------------------------------
 # Load iris
@@ -173,14 +173,14 @@ if (isTRUE(rerun_analysis)){
 
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  data <- iris %>%
-#    groupdata2::fold(
-#      k = fold_counts,
-#      cat_col = "Species",
-#      num_fold_cols = length(fold_counts),  # Must match the length of `k`
-#      parallel = TRUE
-#    )
-#  
+# data <- iris %>%
+#   groupdata2::fold(
+#     k = fold_counts,
+#     cat_col = "Species",
+#     num_fold_cols = length(fold_counts),  # Must match the length of `k`
+#     parallel = TRUE
+#   )
+# 
 
 ## -----------------------------------------------------------------------------
 data
@@ -244,17 +244,17 @@ if (isTRUE(rerun_analysis)){
 }
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  cv <- cross_validate_fn(
-#    data = data,
-#    formulas = formulas,
-#    type = "multinomial",
-#    model_fn = model_fn,
-#    predict_fn = predict_fn,
-#    hyperparameters = hyperparameters,
-#    fold_cols = fold_columns,
-#    parallel = TRUE
-#  )
-#  
+# cv <- cross_validate_fn(
+#   data = data,
+#   formulas = formulas,
+#   type = "multinomial",
+#   model_fn = model_fn,
+#   predict_fn = predict_fn,
+#   hyperparameters = hyperparameters,
+#   fold_cols = fold_columns,
+#   parallel = TRUE
+# )
+# 
 
 ## -----------------------------------------------------------------------------
 cv

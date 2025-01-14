@@ -259,18 +259,18 @@ cv_2$Predictions[[1]] %>% head(10) %>% kable()
 
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  # NOTE: Don't run this
-#  preprocess_fn <- function(train_data, test_data, formula, hyperparameters) {
-#  
-#    # Do preprocessing
-#    # Create data frame with applied preprocessing parameters
-#  
-#    # Return list with these names
-#    list("train" = train_data,
-#         "test" = test_data,
-#         "parameters" = preprocess_parameters)
-#  }
-#  
+# # NOTE: Don't run this
+# preprocess_fn <- function(train_data, test_data, formula, hyperparameters) {
+# 
+#   # Do preprocessing
+#   # Create data frame with applied preprocessing parameters
+# 
+#   # Return list with these names
+#   list("train" = train_data,
+#        "test" = test_data,
+#        "parameters" = preprocess_parameters)
+# }
+# 
 
 ## -----------------------------------------------------------------------------
 preprocess_fn <- function(train_data, test_data, formula, hyperparameters) {

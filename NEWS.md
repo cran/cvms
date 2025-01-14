@@ -1,4 +1,8 @@
 
+# cvms 1.6.3
+
+* Fixes extraction of `nnet::multinom` coefficients after change in `parameters`. Thanks [@strengejacke](https://github.com/LudvigOlsen/cvms/issues/41) for reporting the issue.
+
 # cvms 1.6.2
 
 * Fixes tests after changes to `ggnewscale`. Thanks [@eliocamp](https://github.com/LudvigOlsen/cvms/pull/39) for the PR.
