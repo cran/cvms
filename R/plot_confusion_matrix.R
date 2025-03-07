@@ -107,12 +107,17 @@
 #' @param font_col_percentages \code{list} of font settings for the column percentages.
 #'  Can be provided with \code{\link[cvms:font]{font()}}.
 #' @param intensity_by The measure that should control the color intensity of the tiles.
-#'  Either \code{`counts`}, \code{`normalized`} or one of \code{`log counts`,
-#'  `log2 counts`, `log10 counts`, `arcsinh counts`}.
+#'  Either \code{`counts`}, \code{`normalized`}, \code{`row_percentages`}, \code{`col_percentages`},
+#'  or one of \code{`log counts`, `log2 counts`, `log10 counts`, `arcsinh counts`}.
 #'
-#'  For `normalized`, the color limits become \code{0-100} (except when
-#'  \code{`intensity_lims`} are specified), why the intensities
-#'  can better be compared across plots.
+#'  For `normalized`, `row_percentages`, and `col_percentages`, the color limits
+#'  become \code{0-100} (except when \code{`intensity_lims`} are specified),
+#'  why the intensities can better be compared across plots.
+#'
+#'  \strong{Note}: When \code{`add_sums=TRUE`}, the `row_percentages` and `col_percentages`
+#'  options are only available for the main tiles. A separate intensity metric
+#'  must be specified for the sum tiles (e.g., via
+#'  \code{`sums_settings = sum_tile_settings(intensity_by='normalized')`}).
 #'
 #'  For the `log*` and `arcsinh` versions, the log/arcsinh transformed counts are used.
 #'
@@ -470,13 +475,13 @@ plot_confusion_matrix <- function(conf_matrix,
   )
   checkmate::assert_names(
     x = intensity_by,
-    subset.of = c("counts", "normalized", "log counts", "log2 counts", "log10 counts", "arcsinh counts"),
+    subset.of = c("counts", "normalized", "row_percentages", "col_percentages", "log counts", "log2 counts", "log10 counts", "arcsinh counts"),
     add = assert_collection
   )
   if (!is.null(sums_settings[["intensity_by"]])){
     checkmate::assert_names(
       x = sums_settings[["intensity_by"]],
-      subset.of = c("counts", "normalized", "log counts", "log2 counts", "log10 counts", "arcsinh counts"),
+      subset.of = c("counts", "normalized", "row_percentages", "col_percentages", "log counts", "log2 counts", "log10 counts", "arcsinh counts"),
       add = assert_collection
     )
   }
@@ -650,48 +655,6 @@ plot_confusion_matrix <- function(conf_matrix,
     rm_zeroes_post_rounding = FALSE # Only remove where N==0
   )
 
-  # Set color intensity metric
-  cm <- set_intensity(cm, intensity_by)
-
-  # Get min and max intensity scores and their range
-  # We need to do this before adding sums
-  intensity_measures <- get_intensity_range(
-    data = cm,
-    intensity_by = intensity_by,
-    intensity_lims = intensity_lims
-  )
-
-  # Handle intensities outside of the allow range¨
-  cm$Intensity <- handle_beyond_intensity_limits(
-    intensities = cm$Intensity,
-    intensity_range = intensity_measures,
-    intensity_beyond_lims = intensity_beyond_lims
-  )
-
-  # Calculate number of tiles to size by
-  num_predict_classes <- length(unique(cm[["Prediction"]])) + as.integer(isTRUE(add_sums))
-
-  # Arrow icons
-  arrow_icons <- list("up" = get_figure_path("caret_up_sharp.svg"),
-                      "down" = get_figure_path("caret_down_sharp.svg"),
-                      "left" = get_figure_path("caret_back_sharp.svg"),
-                      "right" = get_figure_path("caret_forward_sharp.svg"))
-
-  # Scaling arrow size
-  arrow_size <- arrow_size / num_predict_classes
-
-  # Add icons depending on where the tile will be in the image
-  cm <- set_arrows(cm, place_x_axis_above = place_x_axis_above,
-                   icons = arrow_icons)
-
-  if (isTRUE(use_ggimage) &&
-      isTRUE(add_zero_shading)){
-    # Add image path for skewed lines for when there's an N=0
-    cm[["image_skewed_lines"]] <- ifelse(cm[["N"]] == 0,
-                                         get_figure_path("skewed_lines.svg"),
-                                         get_figure_path("empty_square.svg"))
-  }
-
   # Calculate column sums
   if (isTRUE(add_col_percentages) || isTRUE(add_sums)) {
     column_sums <- cm %>%
@@ -730,6 +693,48 @@ plot_confusion_matrix <- function(conf_matrix,
       )
   }
 
+  # Set color intensity metric
+  cm <- set_intensity(cm, intensity_by)
+
+  # Get min and max intensity scores and their range
+  # We need to do this before adding sums
+  intensity_measures <- get_intensity_range(
+    data = cm,
+    intensity_by = intensity_by,
+    intensity_lims = intensity_lims
+  )
+
+  # Handle intensities outside of the allow range
+  cm$Intensity <- handle_beyond_intensity_limits(
+    intensities = cm$Intensity,
+    intensity_range = intensity_measures,
+    intensity_beyond_lims = intensity_beyond_lims
+  )
+
+  # Calculate number of tiles to size by
+  num_predict_classes <- length(unique(cm[["Prediction"]])) + as.integer(isTRUE(add_sums))
+
+  # Arrow icons
+  arrow_icons <- list("up" = get_figure_path("caret_up_sharp.svg"),
+                      "down" = get_figure_path("caret_down_sharp.svg"),
+                      "left" = get_figure_path("caret_back_sharp.svg"),
+                      "right" = get_figure_path("caret_forward_sharp.svg"))
+
+  # Scaling arrow size
+  arrow_size <- arrow_size / num_predict_classes
+
+  # Add icons depending on where the tile will be in the image
+  cm <- set_arrows(cm, place_x_axis_above = place_x_axis_above,
+                   icons = arrow_icons)
+
+  if (isTRUE(use_ggimage) &&
+      isTRUE(add_zero_shading)){
+    # Add image path for skewed lines for when there's an N=0
+    cm[["image_skewed_lines"]] <- ifelse(cm[["N"]] == 0,
+                                         get_figure_path("skewed_lines.svg"),
+                                         get_figure_path("empty_square.svg"))
+  }
+
   # Signal that current rows are not for the sum tiles
   cm[["is_sum"]] <- FALSE
 
@@ -765,6 +770,16 @@ plot_confusion_matrix <- function(conf_matrix,
 
     sums_intensity_by <- sums_settings[["intensity_by"]]
     if (is.null(sums_intensity_by)) sums_intensity_by <- intensity_by
+    if (sums_intensity_by %in% c("row_percentages", "col_percentages")) {
+      stop(
+        paste0(
+          "Cannot set intensities of sum tiles by `",
+          sums_intensity_by,
+          "`. Please specify a different intensity measure. ",
+          "E.g.: `sums_settings = sum_tile_settings(intensity_by='normalized')`"
+        )
+      )
+    }
 
     sums_intensity_beyond_lims <- sums_settings[["intensity_beyond_lims"]]
     if (is.null(sums_intensity_beyond_lims)) sums_intensity_beyond_lims <- intensity_beyond_lims
@@ -808,17 +823,21 @@ plot_confusion_matrix <- function(conf_matrix,
     } else {
       class_order <- c(class_order, "Total")
     }
-    class_labels <- class_order
-    class_labels[class_labels == "Total"] <- sums_settings[["label"]]
+
+    class_labels_target <- class_order[class_order %in% c("Total", unique(cm[["Target"]]))]
+    class_labels_pred <- class_order[class_order %in% c("Total", unique(cm[["Prediction"]]))]
+    class_labels_target[class_labels_target == "Total"] <- sums_settings[["label"]]
+    class_labels_pred[class_labels_pred == "Total"] <- sums_settings[["label"]]
+
     cm[["Target"]] <- factor(
       cm[["Target"]],
       levels = class_order[class_order %in% unique(cm[["Target"]])],
-      labels = class_labels
+      labels = class_labels_target
     )
     cm[["Prediction"]] <- factor(
       cm[["Prediction"]],
       levels = class_order[class_order %in% unique(cm[["Prediction"]])],
-      labels = class_labels
+      labels = class_labels_pred
     )
   }
 
@@ -854,8 +873,8 @@ plot_confusion_matrix <- function(conf_matrix,
 
   # Remove percentages outside the diagonal
   if (isTRUE(diag_percentages_only)) {
-    cm[cm[["Target"]] != cm[["Prediction"]],] <- empty_tile_percentages(
-      cm[cm[["Target"]] != cm[["Prediction"]],])
+    cm[as.character(cm[["Target"]]) != as.character(cm[["Prediction"]]),] <- empty_tile_percentages(
+      cm[as.character(cm[["Target"]]) != as.character(cm[["Prediction"]]),])
   }
   if (isTRUE(rm_zero_percentages)){
     # Remove percentages when the count is 0
@@ -931,7 +950,7 @@ plot_confusion_matrix <- function(conf_matrix,
       pl <- pl +
         ggnewscale::new_scale_fill() +
         ggplot2::geom_tile(
-          data = cm[cm[["is_sum"]] & cm[["Target"]] != cm[["Prediction"]],],
+          data = cm[cm[["is_sum"]] & as.character(cm[["Target"]]) != as.character(cm[["Prediction"]]),],
           mapping = ggplot2::aes(fill = .data$Intensity),
           colour = sums_settings[["tile_border_color"]],
           linewidth = sums_settings[["tile_border_size"]],
@@ -954,7 +973,7 @@ plot_confusion_matrix <- function(conf_matrix,
     } else {
       pl <- pl +
         ggplot2::geom_tile(
-          data = cm[cm[["is_sum"]] & cm[["Target"]] != cm[["Prediction"]],],
+          data = cm[cm[["is_sum"]] & as.character(cm[["Target"]]) !=as.character(cm[["Prediction"]]),],
           fill = sums_settings[["tile_fill"]],
           colour = sums_settings[["tile_border_color"]],
           linewidth = sums_settings[["tile_border_size"]],
@@ -966,7 +985,7 @@ plot_confusion_matrix <- function(conf_matrix,
     # Add special total count tile
     pl <- pl +
       ggplot2::geom_tile(
-        data = cm[cm[["is_sum"]] & cm[["Target"]] == cm[["Prediction"]],],
+        data = cm[cm[["is_sum"]] & as.character(cm[["Target"]]) == as.character(cm[["Prediction"]]),],
         colour = sums_settings[["tc_tile_border_color"]],
         linewidth = sums_settings[["tc_tile_border_size"]],
         linetype = sums_settings[["tc_tile_border_linetype"]],
@@ -1039,7 +1058,7 @@ plot_confusion_matrix <- function(conf_matrix,
       # Add count labels to middle of sum tiles
       pl <- pl +
         text_geom(
-          data = cm[cm[["is_sum"]] & cm[["Target"]] != cm[["Prediction"]], ],
+          data = cm[cm[["is_sum"]] & as.character(cm[["Target"]]) != as.character(cm[["Prediction"]]), ],
           ggplot2::aes(label = .data$N_text),
           color = tmp_color
         )
@@ -1047,7 +1066,7 @@ plot_confusion_matrix <- function(conf_matrix,
       # Add count label to middle of total count tile
       pl <- pl +
         text_geom(
-          data = cm[cm[["is_sum"]] & cm[["Target"]] == cm[["Prediction"]], ],
+          data = cm[cm[["is_sum"]] & as.character(cm[["Target"]]) == as.character(cm[["Prediction"]]), ],
           ggplot2::aes(label = .data$N_text),
           color = tmp_tc_color
         )
@@ -1091,7 +1110,7 @@ plot_confusion_matrix <- function(conf_matrix,
       # Add percentage labels to middle of sum tiles
       pl <- pl +
         text_geom(
-          data = cm[cm[["is_sum"]] & cm[["Target"]] != cm[["Prediction"]], ],
+          data = cm[cm[["is_sum"]] & as.character(cm[["Target"]]) != as.character(cm[["Prediction"]]), ],
           ggplot2::aes(label = .data$Normalized_text),
           color = tmp_color
         )
@@ -1099,7 +1118,7 @@ plot_confusion_matrix <- function(conf_matrix,
       # Add percentage label to middle of total count tile
       pl <- pl +
         text_geom(
-          data = cm[cm[["is_sum"]] & cm[["Target"]] == cm[["Prediction"]], ],
+          data = cm[cm[["is_sum"]] & as.character(cm[["Target"]]) == as.character(cm[["Prediction"]]), ],
           ggplot2::aes(label = .data$Normalized_text),
           color = tmp_tc_color
         )
