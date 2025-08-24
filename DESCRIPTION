@@ -1,6 +1,6 @@
 Package: cvms
 Title: Cross-Validation for Model Selection
-Version: 1.8.0
+Version: 1.8.1
 Authors@R: 
     c(person(given = "Ludvig Renbo",
              family = "Olsen",
@@ -47,7 +47,7 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2025-07-07 19:36:41 UTC; au547627
+Packaged: 2025-08-24 15:49:53 UTC; au547627
 Author: Ludvig Renbo Olsen [aut, cre] (ORCID:
     <https://orcid.org/0009-0006-6798-7454>),
   Hugh Benjamin Zachariae [aut],
@@ -55,4 +55,4 @@ Author: Ludvig Renbo Olsen [aut, cre] (ORCID:
   Daniel Lüdecke [ctb] (ORCID: <https://orcid.org/0000-0002-8895-3206>)
 Maintainer: Ludvig Renbo Olsen <r-pkgs@ludvigolsen.dk>
 Repository: CRAN
-Date/Publication: 2025-07-08 02:20:02 UTC
+Date/Publication: 2025-08-24 23:50:07 UTC
