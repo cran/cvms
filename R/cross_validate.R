@@ -1,5 +1,3 @@
-
-
 #   __________________ #< ccfcdb8c94c692518bdaf6f1509380e1 ># __________________
 #   Cross-validate lm lmer glm glmer                                        ####
 
@@ -88,7 +86,7 @@
 #'
 #'  Available preprocessings are:
 #'
-#'  \tabular{rrr}{
+#'  \tabular{rr}{
 #'   \strong{Name} \tab \strong{Description} \cr
 #'   "standardize" \tab Centers and scales the numeric predictors.\cr
 #'   "range" \tab Normalizes the numeric predictors to the \code{0}-\code{1} range.
@@ -110,7 +108,6 @@
 #'
 #'  Remember to register a parallel backend first.
 #'  E.g. with \code{doParallel::registerDoParallel}.
-#' @param link,models,model_verbose Deprecated.
 #' @details
 #'
 #'  Packages used:
@@ -323,7 +320,7 @@
 #'   data,
 #'   formulas = formulas,
 #'   family = "gaussian"
-#'   #, parallel = TRUE  # Uncomment
+#'   # , parallel = TRUE  # Uncomment
 #' )
 #' }
 #' @importFrom stats binomial gaussian glm lm
@@ -342,31 +339,8 @@ cross_validate <- function(
   preprocessing = NULL,
   rm_nc = FALSE,
   parallel = FALSE,
-  verbose = FALSE,
-  link = deprecated(),
-  models = deprecated(),
-  model_verbose = deprecated()) {
-
-  if (!rlang::is_missing(link)) {
-    deprecate_stop("1.0.0", "cvms::cross_validate(link = )")
-  }
-
-  if (!rlang::is_missing(models)) {
-    deprecate_warn(
-      "1.0.0", "cvms::cross_validate(models = )",
-      "cvms::cross_validate(formulas = )"
-    )
-    formulas <- models
-  }
-
-  if (!rlang::is_missing(model_verbose)) {
-    deprecate_warn(
-      "1.0.0", "cvms::cross_validate(model_verbose = )",
-      "cvms::cross_validate(verbose = )"
-    )
-    verbose <- model_verbose
-  }
-
+  verbose = FALSE
+) {
   # This function does not accept 'multinomial'
   checkmate::assert_choice(
     x = family,

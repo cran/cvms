@@ -17,10 +17,7 @@ cross_validate(
   preprocessing = NULL,
   rm_nc = FALSE,
   parallel = FALSE,
-  verbose = FALSE,
-  link = deprecated(),
-  models = deprecated(),
-  model_verbose = deprecated()
+  verbose = FALSE
 )
 }
 \arguments{
@@ -102,7 +99,7 @@ cross_validate(
 
  Available preprocessings are:
 
- \tabular{rrr}{
+ \tabular{rr}{
   \strong{Name} \tab \strong{Description} \cr
   "standardize" \tab Centers and scales the numeric predictors.\cr
   "range" \tab Normalizes the numeric predictors to the \code{0}-\code{1} range.
@@ -127,8 +124,6 @@ cross_validate(
 
 \item{verbose}{Whether to message process information
 like the number of model instances to fit and which model function was applied. (Logical)}
-
-\item{link, models, model_verbose}{Deprecated.}
 }
 \value{
 \code{tibble} with results for each model.
@@ -354,7 +349,7 @@ cross_validate(
   data,
   formulas = formulas,
   family = "gaussian"
-  #, parallel = TRUE  # Uncomment
+  # , parallel = TRUE  # Uncomment
 )
 }
 }

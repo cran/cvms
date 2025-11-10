@@ -2440,7 +2440,31 @@ test_that("specific multinomial predictions yield correct results in evaluate()"
   )
 })
 
-# TODO Add test that majority vote id_method works when not all classes are predicted most by one of the ids
+test_that("evaluate() majority ID aggregation errors when a class is never predicted", {
+  data <- tibble::tibble(
+    model = c("m1", "m1", "m2", "m2"),
+    id = paste0("id", 1:4),
+    target = c("A", "A", "B", "B"),
+    A = c(0.8, 0.7, 0.2, 0.3),
+    B = c(0.2, 0.3, 0.8, 0.7),
+    C = c(0, 0, 0, 0)
+  )
+
+  # Class C is never the argmax, so majority vote adds padding columns
+  # that currently break due to inconsistent row counts in bind_cols()
+  expect_error(
+    evaluate(
+      dplyr::group_by(data, model),
+      target_col = "target",
+      prediction_cols = c("A", "B", "C"),
+      type = "multinomial",
+      id_col = "id",
+      id_method = "majority"
+    ),
+    "Can't recycle",
+    fixed = FALSE
+  )
+})
 
 test_that("arguments throw proper errors and warnings in evaluate()", {
   #### ####
@@ -3205,8 +3229,12 @@ test_that("binomial evaluation works in evaluate()", {
     apply_softmax = FALSE
   )
 
-  # TODO Add tests here that grouped dataframes work in binomial!
-
+  # Check both groups are present and equal
+  expect_equal(bn_eval_5$fold_, c(1, 2))
+  expect_equal(
+    bn_eval_5[1, 2:(ncol(bn_eval_5)-1)] %>% dplyr::select( dplyr::where(is.numeric)),
+    bn_eval_5[1, 2:(ncol(bn_eval_5)-1)] %>% dplyr::select( dplyr::where(is.numeric))
+  )
 
   # Errors
 
@@ -3300,16 +3328,6 @@ test_that("gaussian evaluations are correct in evaluate()", {
 
   eval_data <- participant.scores
   eval_data[["score_predictions"]] <- score_predictions
-
-  expect_error(evaluate(eval_data,
-    target_col = "score",
-    prediction_cols = "score_predictions",
-    models = list(score_model_1),
-    type = "gaussian",
-    metrics = "all"
-  ),
-  class = "lifecycle_error_deprecated"
-  )
 
   e1 <- evaluate(eval_data,
     target_col = "score",

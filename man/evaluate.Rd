@@ -16,8 +16,7 @@ evaluate(
   positive = 2,
   metrics = list(),
   include_predictions = TRUE,
-  parallel = FALSE,
-  models = deprecated()
+  parallel = FALSE
 )
 }
 \arguments{
@@ -33,7 +32,7 @@ evaluate(
  The columns should have the name of their class,
  as they are named in the target column. E.g.:
 
- \tabular{rrrrr}{
+ \tabular{rrrr}{
   \strong{class_1} \tab \strong{class_2} \tab
   \strong{class_3} \tab \strong{target}\cr
   0.269 \tab 0.528 \tab 0.203 \tab class_2\cr
@@ -45,7 +44,7 @@ evaluate(
 
  A single column of type \code{character} with the predicted classes. E.g.:
 
- \tabular{rrrrr}{
+ \tabular{rr}{
   \strong{prediction} \tab \strong{target}\cr
   class_2 \tab class_2\cr
   class_1 \tab class_3\cr
@@ -62,7 +61,7 @@ evaluate(
  the second class alphabetically}
  (1 if classes are 0 and 1). E.g.:
 
- \tabular{rrrrr}{
+ \tabular{rr}{
   \strong{prediction} \tab \strong{target}\cr
   0.769 \tab 1\cr
   0.368 \tab 1\cr
@@ -77,7 +76,7 @@ evaluate(
 
  A single column of type \code{character} with the predicted classes. E.g.:
 
- \tabular{rrrrr}{
+ \tabular{rr}{
   \strong{prediction} \tab \strong{target}\cr
   class_0 \tab class_1\cr
   class_1 \tab class_1\cr
@@ -93,7 +92,7 @@ evaluate(
  When \code{`type`} is \code{"gaussian"}, the predictions should be passed as
  one column with the predicted values. E.g.:
 
- \tabular{rrrrr}{
+ \tabular{rr}{
   \strong{prediction} \tab \strong{target}\cr
   28.9 \tab 30.2\cr
   33.2 \tab 27.1\cr
@@ -190,8 +189,6 @@ in the output as a nested \code{tibble}. (Logical)}
 
 \item{parallel}{Whether to run evaluations in parallel,
 when \code{`data`} is grouped with \code{\link[dplyr:group_by]{group_by}}.}
-
-\item{models}{Deprecated.}
 }
 \value{
 ----------------------------------------------------------------
@@ -459,48 +456,47 @@ evaluate(
 #
 
 # Only run if `nnet` is installed
-if (requireNamespace("nnet", quietly = TRUE)){
+if (requireNamespace("nnet", quietly = TRUE)) {
+  # Create a data frame with some predictors and a target column
+  class_names <- paste0("class_", 1:4)
+  data_for_nnet <- multiclass_probability_tibble(
+    num_classes = 3, # Here, number of predictors
+    num_observations = 30,
+    apply_softmax = FALSE,
+    FUN = rnorm,
+    class_name = "predictor_"
+  ) \%>\%
+    dplyr::mutate(Target = sample(
+      class_names,
+      size = 30,
+      replace = TRUE
+    ))
 
-# Create a data frame with some predictors and a target column
-class_names <- paste0("class_", 1:4)
-data_for_nnet <- multiclass_probability_tibble(
-  num_classes = 3, # Here, number of predictors
-  num_observations = 30,
-  apply_softmax = FALSE,
-  FUN = rnorm,
-  class_name = "predictor_"
-) \%>\%
-  dplyr::mutate(Target = sample(
-    class_names,
-    size = 30,
-    replace = TRUE
-  ))
+  # Train multinomial model using the nnet package
+  mn_model <- nnet::multinom(
+    "Target ~ predictor_1 + predictor_2 + predictor_3",
+    data = data_for_nnet
+  )
 
-# Train multinomial model using the nnet package
-mn_model <- nnet::multinom(
-  "Target ~ predictor_1 + predictor_2 + predictor_3",
-  data = data_for_nnet
-)
+  # Predict the targets in the dataset
+  # (we would usually use a test set instead)
+  predictions <- predict(
+    mn_model,
+    data_for_nnet,
+    type = "probs"
+  ) \%>\%
+    dplyr::as_tibble()
 
-# Predict the targets in the dataset
-# (we would usually use a test set instead)
-predictions <- predict(
-  mn_model,
-  data_for_nnet,
-  type = "probs"
-) \%>\%
-  dplyr::as_tibble()
+  # Add the targets
+  predictions[["Target"]] <- data_for_nnet[["Target"]]
 
-# Add the targets
-predictions[["Target"]] <- data_for_nnet[["Target"]]
-
-# Evaluate predictions
-evaluate(
-  data = predictions,
-  target_col = "Target",
-  prediction_cols = class_names,
-  type = "multinomial"
-)
+  # Evaluate predictions
+  evaluate(
+    data = predictions,
+    target_col = "Target",
+    prediction_cols = class_names,
+    type = "multinomial"
+  )
 }
 }
 }
